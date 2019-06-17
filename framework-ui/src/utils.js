@@ -4,20 +4,26 @@ export const setEntryInUrl = id => {
   window.history.pushState({}, "", url.toString());
 };
 
-export const sortAlphabetically = (array, getAttribute) =>
-  array.sort((a, b) => {
-    var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
-    var nameB = getAttribute(b).toUpperCase(); // ignore upper and lowercase
-    if (nameA < nameB) {
-      return -1;
+export const sortAlphabetically = (array, getAttribute) => {
+    if (!array) {
+        console.log("No array data to sort");
+        return []
     }
-    if (nameA > nameB) {
-      return 1;
-    }
+    return array.sort((a, b) => {
+            var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
+            var nameB = getAttribute(b).toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
 
-    // names must be equal
-    return 0;
-  });
+            // names must be equal
+            return 0;
+        }
+    );
+}
 
 export const searchRanked = (searchForInput, data) => {
   const rankedEntries = data

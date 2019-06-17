@@ -46,8 +46,8 @@ router.get('/context', async (ctx, next) => {
 
 // DB Driver and session setup
 app.use(async (ctx, next) => {
-  ctx.driver = neo4j.driver(
-    'bolt://192.168.178.47:7687',
+  ctx.driver = neo4j.driver(  // 192.168.178.47
+    'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
   ctx.session = ctx.driver.session()
