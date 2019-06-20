@@ -1,0 +1,25 @@
+{
+  "@context": "http://localhost:6060/context/",
+  "id": "http://localhost:6060/entries/8",
+  "skillReuseLevel": "1 Transversal",
+  "skillType": "Skill or Competence",
+  "isEssentialPartOf": [],
+  "isOptionalPartOf": [],
+  "isSameAs": [],
+  "isSimilarTo": [],
+  "needsAsPrerequisite": [
+    "http://localhost:6060/entries/10",
+    "http://localhost:6060/entries/9",
+    "http://localhost:6060/entries/11",
+    "http://localhost:6060/entries/12"
+  ],
+  "prefLabel": {
+    "language": "en",
+    "value": "Interactive and collaborative learning in an authentic international environment"
+  },
+  "altLabel": [],
+  "description": {
+    "language": "en",
+    "value": "Interactive and collaborative learning in an authentic international environment implies that the student develops teamwork skills , collaborates with peers across disciplines and contexts , acquiring new international learning  experiences and interacting with authentic international tools, systems, and resources in a foreign language"
+  }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "http://www.w3.org/2004/02/skos/core#altLabel": [],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "Gaining knowledge about the culture they visit.Getting to know other cultural - based perspectives of education"
+      }
+    ],
+    "@id": "http://localhost:6060/entries/2",
+    "http://localhost:6060/context/isEssentialPartOf": [
+      {
+        "@value": "http://localhost:6060/entries/1"
+      }
+    ],
+    "http://localhost:6060/context/isOptionalPartOf": [],
+    "http://localhost:6060/context/isSameAs": [],
+    "http://localhost:6060/context/isSimilarTo": [],
+    "http://localhost:6060/context/needsAsPrerequisite": [],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [
+      {
+        "@language": "en",
+        "@value": "Gaining cultural knowledge"
+      }
+    ],
+    "http://data.europa.eu/esco/model#skillReuseLevel": [
+      {
+        "@value": "1 Transversal"
+      }
+    ],
+    "http://data.europa.eu/esco/model#skillType": [
+      {
+        "@value": "Skill or Competence"
+      }
+    ]
+  }
+]
