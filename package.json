@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "install:all": "(cd framework-api && npm i) && (cd framework-ui && npm i)"
+    "install:all": "(cd framework-api/src && npm i) && (cd framework-ui && npm i)"
   }
 }
