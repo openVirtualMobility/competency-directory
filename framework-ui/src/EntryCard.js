@@ -114,6 +114,31 @@ export const EntryCard = ({
             ? description.value.split(" ", 20).join(" ") + "..."
             : description.value}
         </Typography>
+
+
+        {!hasDetails && (
+
+          <a
+            href={`?entry=${id.toLowerCase()}`}
+            onClick={null}
+          >
+            {id.toLowerCase()}
+          </a>
+
+        )}
+
+        {!hasDetails && (
+
+          <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
+            Show More
+                    </Button>
+
+        )}
+
+
+
+
+
         {references}
         {hasDetails && (
           <div
