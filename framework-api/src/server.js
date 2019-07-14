@@ -2,6 +2,7 @@ import Koa from 'koa'
 import Router from 'koa-router'
 import { context } from './database/context'
 import { entries } from './routes/entries'
+import { auth } from './routes/auth'
 import cors from '@koa/cors'
 import neo4j from 'neo4j-driver'
 import * as db from './database/database'
@@ -10,6 +11,10 @@ import { escoExample } from './routes/escoExample'
 import { competencies } from './database/competencies'
 import { references } from './routes/references'
 import { references as referenceData } from './database/references'
+import koaBody from 'koa-body';
+
+
+
 
 const app = new Koa()
 const router = new Router()
@@ -23,6 +28,9 @@ app.use(async (ctx, next) => {
   const rt = ctx.response.get('X-Response-Time')
   console.log(`${ctx.method} ${ctx.url} - ${rt}`)
 })
+
+// using the koa bodyParser 
+app.use(koaBody());
 
 // x-response-time
 app.use(async (ctx, next) => {
@@ -127,6 +135,9 @@ app
   // Entries
   .use(entries.routes())
   .use(entries.allowedMethods())
+  // Authentication
+  .use(auth.routes())
+  .use(auth.allowedMethods())
   // References
   .use(references.routes())
   .use(references.allowedMethods())

@@ -60,7 +60,7 @@ export const getReferences = async () => {
     sourceID: `http://localhost:6060/entries/${entry.get('sourceNode.id')}`,
     referenceType: `http://localhost:6060/referenceTypes/${
       entry.get('reference').type
-    }`,
+      }`,
     targetID: `http://localhost:6060/entries/${entry.get('targetNode.id')}`,
   }))
   session.close()
@@ -117,4 +117,21 @@ export const getEntries = async requestedId => {
     meta: {},
     data,
   })
+}
+
+export const createUser = async (username, password) => {
+
+  const driver = neo4j.driver(
+    'bolt://db:7687',
+    neo4j.auth.basic('neo4j', 'qwerqwer')
+  )
+  const session = driver.session()
+  return await session.run('CREATE (user:User {username: {username}, password: { password }}) RETURN user', {
+      username: username,
+      // here would be the hashing
+      password: password,
+
+    }).then(results => {
+      return new User(results.records[0].get('user'));
+    })
 }

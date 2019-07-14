@@ -1,5 +1,9 @@
 {
   "scripts": {
     "install:all": "(cd framework-api/src && npm i) && (cd framework-ui && npm i)"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "koa-bodyparser": "^4.2.1"
   }
 }
