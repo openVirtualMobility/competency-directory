@@ -127,11 +127,34 @@ export const createUser = async (username, password) => {
   )
   const session = driver.session()
   return await session.run('CREATE (user:User {username: {username}, password: { password }}) RETURN user', {
-      username: username,
-      // here would be the hashing
-      password: password,
+    username: username,
+    // here would be the hashing
+    password: password,
 
-    }).then(results => {
-      return new User(results.records[0].get('user'));
-    })
+  }).then(results => {
+    return results.records;
+  })
+}
+
+export const getUserWithUsername = async (username) => {
+  const driver = neo4j.driver(
+    'bolt://db:7687',
+    neo4j.auth.basic('neo4j', 'qwerqwer')
+  )
+  const session = driver.session()
+  return session.run('MATCH (user:User {username: {username}}) RETURN user', {
+    username: username
+  })
+}
+
+export const getUserWithUsernameAndPassword = async (username, password) => {
+  const driver = neo4j.driver(
+    'bolt://db:7687',
+    neo4j.auth.basic('neo4j', 'qwerqwer')
+  )
+  const session = driver.session()
+  return session.run('MATCH (user:User {username: {username}, password: {password}}) RETURN user', {
+    username: username,
+    password: password
+  })
 }
