@@ -8,6 +8,7 @@ const entries = new Router({
 
 entries
   .get('/', async (ctx, next) => {
+
     const { data } = await database.getEntries()
     ctx.data = data
     await next()

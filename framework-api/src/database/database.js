@@ -71,6 +71,18 @@ export const getReferences = async () => {
   })
 }
 
+export const getEntries2 = async => {
+  const driver = neo4j.driver(
+    'bolt://db:7687',
+    neo4j.auth.basic('neo4j', 'qwerqwer')
+  )
+  const session = driver.session()
+
+  return session.run(
+    'MATCH (entry:Entry) RETURN entry'
+  )
+} 
+
 export const getEntries = async requestedId => {
   const driver = neo4j.driver(
     'bolt://db:7687',
@@ -82,14 +94,14 @@ export const getEntries = async requestedId => {
     : ''
   const result = await session.writeTransaction(tx =>
     tx.run(
-      `MATCH (currentNode) ${whereClause} OPTIONAL MATCH (currentNode)-[relation]->(targetNode) ${whereClause} RETURN currentNode, collect(relation), collect(targetNode)`
+      `MATCH (entry: Entry) ${whereClause} OPTIONAL MATCH (currentNode)-[relation]->(targetNode) ${whereClause} RETURN entry, collect(relation), collect(targetNode)`
     )
   )
   const { data: referenceTypes } = await getReferenceTypes()
   const referenceKeys = referenceTypes.map(({ id }) => id)
   const data = result.records
     .map(record => {
-      const rawEntry = record.get('currentNode').properties
+      const rawEntry = record.get('entry').properties
       const rawReferences = record.get('collect(relation)')
       const targetNodes = record.get('collect(targetNode)')
       const references = Object.assign(

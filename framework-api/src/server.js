@@ -82,9 +82,9 @@ router.get('/populate', async (ctx, next) => {
   await ctx.session.writeTransaction(tx =>
     tx.run(
       `
-      UNWIND $props AS entry
-      CREATE (node:entry)
-      SET node = entry
+      UNWIND $props AS Entry
+      CREATE (node:Entry)
+      SET node = Entry
       `,
       { props }
     )
