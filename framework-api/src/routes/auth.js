@@ -21,7 +21,10 @@ auth
   .post('/login', async (ctx, next) => {
     // getting the body object, undefined if no body provided
     let body = ctx.request.body;
-    
+    let password = body.password;
+    console.log("PASSWORD: ", password);
+    console.log("PASSWORD TYPE ", typeof password);
+    console.log(body)
     // hash password with sha256 algorithm
     let hashedPwd = crypto.createHash('sha256').update(body.password).digest('base64');
 
