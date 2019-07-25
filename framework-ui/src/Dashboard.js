@@ -177,7 +177,7 @@ class Dashboard extends Component {
                 direction="row"
                 justify="flex-start"
                 alignItems="stretch"
-                spacing={24}
+                spacing={5}
                 {...downShift.getMenuProps()}
               >
                 {gridItems}

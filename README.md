@@ -8,7 +8,7 @@ To install the dependencies of the project, run `npm run install:all` in the roo
 
 ## Starting the Application
 
-All you need to do afterwards is running `docker-compose up` in the root folder of the project. The UI can then be found at [http://localhost:3000](http://localhost:3000) and the API at [http://localhost:6060](http://localhost:6060).
+All you need to do afterwards is running `docker-compose up` in the root folder of the project. The UI can then be found at [http://localhost:3000](http://localhost:3000) and the API at [http://localhost:80](http://localhost:80).
 
 ## Development
 

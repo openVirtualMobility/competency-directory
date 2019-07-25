@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import Router from 'koa-router'
+import serve from "koa-static"
 import { context } from './database/context'
 import { entries } from './routes/entries'
 import { auth } from './routes/auth'
@@ -11,13 +12,12 @@ import { escoExample } from './routes/escoExample'
 import { competencies } from './database/competencies'
 import { references } from './routes/references'
 import { references as referenceData } from './database/references'
-import koaBody from 'koa-body';
-
-
-
+import koaBody from 'koa-body'
 
 const app = new Koa()
 const router = new Router()
+
+app.use(serve("./build"))
 
 // CORS
 app.use(cors())
@@ -39,6 +39,7 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start
   ctx.set('X-Response-Time', `${ms}ms`)
 })
+
 
 // Set defaults for the api
 app.use(async (ctx, next) => {
@@ -71,6 +72,8 @@ router.get('/deleteAll', async (ctx, next) => {
   ctx.body = JSON.stringify(result)
   await next()
 })
+
+
 
 router.get('/populate', async (ctx, next) => {
   const props = competencies.map(competency => ({
@@ -147,5 +150,6 @@ app
   // EscoExample
   .use(escoExample.routes())
   .use(escoExample.allowedMethods())
+
 
 app.listen(6060)

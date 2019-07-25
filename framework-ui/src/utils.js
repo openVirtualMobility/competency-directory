@@ -1,6 +1,22 @@
 export const setEntryInUrl = id => {
+  var slicedId = id.slice(-2);
+  var parsedId = parseInt(slicedId);
+  if (! isNaN(parsedId)) {
+    var finalId = parsedId 
+  } else {
+    slicedId = id.slice(-1);
+    parsedId = parseInt(slicedId);
+    var finalId = parsedId
+  }
+
   const url = new URL(window.location);
-  url.search = `?entry=${id}`;
+  url.search = `?${finalId}`;
+  window.history.pushState({}, "", url.toString());
+};
+
+export const navigateTo = route => {
+  const url = new URL(window.location);
+  url.search = `${route}`;
   window.history.pushState({}, "", url.toString());
 };
 

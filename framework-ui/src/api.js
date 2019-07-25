@@ -38,6 +38,8 @@ class Api {
     password: password
   })
   .then(function (response) {
+    console.log("RESPONSE")
+    console.log(response)
     return response;
   })
   .catch(function (error) {

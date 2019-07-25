@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import { Link } from "react-router-dom"
 
 import { setEntryInUrl } from "./utils";
 
@@ -48,8 +49,8 @@ export const EntryCard = ({
             <List dense>
               {referenceItems.map(id => (
                 <ListItem key={id}>
-                  <a
-                    href={`?entry=${id.toLowerCase()}`}
+                  <Link
+                    href={`${id.toLowerCase()}`}
                     onClick={e => {
                       // If the link directs to the app again prevent opening it
                       // Instead push to the history and open the modal withou leaving the page
@@ -61,7 +62,7 @@ export const EntryCard = ({
                     }}
                   >
                     {id.toLowerCase()}
-                  </a>
+                  </Link>
                 </ListItem>
               ))}
             </List>
@@ -119,7 +120,7 @@ export const EntryCard = ({
         {!hasDetails && (
 
           <a
-            href={`?entry=${id.toLowerCase()}`}
+            href={`${id.toLowerCase()}`}
             onClick={null}
           >
             {id.toLowerCase()}

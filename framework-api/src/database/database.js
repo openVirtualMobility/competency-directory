@@ -57,11 +57,11 @@ export const getReferences = async () => {
     )
   )
   const data = records.map(entry => ({
-    sourceID: `http://localhost:6060/entries/${entry.get('sourceNode.id')}`,
-    referenceType: `http://localhost:6060/referenceTypes/${
+    sourceID: `http://localhost:80/entries/${entry.get('sourceNode.id')}`,
+    referenceType: `http://localhost:80/referenceTypes/${
       entry.get('reference').type
       }`,
-    targetID: `http://localhost:6060/entries/${entry.get('targetNode.id')}`,
+    targetID: `http://localhost:80/entries/${entry.get('targetNode.id')}`,
   }))
   session.close()
   driver.close()
@@ -90,11 +90,11 @@ export const getEntries = async requestedId => {
   )
   const session = driver.session()
   const whereClause = requestedId
-    ? `WHERE currentNode.id = "${requestedId}"`
+    ? `WHERE entry.id = "${requestedId}"`
     : ''
   const result = await session.writeTransaction(tx =>
     tx.run(
-      `MATCH (entry: Entry) ${whereClause} OPTIONAL MATCH (currentNode)-[relation]->(targetNode) ${whereClause} RETURN entry, collect(relation), collect(targetNode)`
+      `MATCH (entry: Entry) ${whereClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${whereClause} RETURN entry, collect(relation), collect(targetNode)`
     )
   )
   const { data: referenceTypes } = await getReferenceTypes()
@@ -110,12 +110,12 @@ export const getEntries = async requestedId => {
       )
       rawReferences.forEach(({ type }, index) => {
         references[type].push(
-          `http://localhost:6060/entries/${targetNodes[index].properties.id}`
+          `http://localhost:80/entries/${targetNodes[index].properties.id}`
         )
       })
       return {
         ...rawEntry,
-        id: `http://localhost:6060/entries/${rawEntry.id}`,
+        id: `http://localhost:80/entries/${rawEntry.id}`,
         prefLabel: rawEntry.prefLabel.map(x => JSON.parse(x)),
         altLabel: rawEntry.altLabel.map(x => JSON.parse(x)),
         description: rawEntry.description.map(x => JSON.parse(x)),

@@ -53,7 +53,10 @@ export default function SignIn() {
 
   const submitLogin = async () => {
     let response = await api.postLogin(state.username, state.password)
-    localStorage.setItem("jwt", response.data.token)
+    if (response.data.Status === "Auth Success") {
+      console.log("WRITING INTO LOCALSTORAGE");
+      localStorage.setItem("jwt", response.data.token);
+    }
   };
 
   return (
