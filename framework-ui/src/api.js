@@ -27,6 +27,12 @@ class Api {
       method: "GET"
     });
 
+  getEntryWithId = (id) =>
+    this.fetch(`/entries/${id}`, {
+      method: "GET"
+    });
+
+
   getReferenceTypes = () =>
     this.fetch("/referenceTypes", {
       method: "GET"

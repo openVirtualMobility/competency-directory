@@ -6,9 +6,25 @@ import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { Link } from "react-router-dom"
+import { Link, Route } from "react-router-dom"
 
 import { setEntryInUrl } from "./utils";
+
+const onClick = (history, id) => {
+
+  var slicedId = id.slice(-2);
+  var parsedId = parseInt(slicedId);
+  if (! isNaN(parsedId)) {
+    var finalId = parsedId 
+  } else {
+    slicedId = id.slice(-1);
+    parsedId = parseInt(slicedId);
+    var finalId = parsedId
+  }
+  console.log(finalId);
+  history.push(`entries/${finalId}`);
+
+}
 
 export const EntryCard = ({
   item,
@@ -48,22 +64,27 @@ export const EntryCard = ({
             </Typography>
             <List dense>
               {referenceItems.map(id => (
-                <ListItem key={id}>
-                  <Link
-                    href={`${id.toLowerCase()}`}
-                    onClick={e => {
-                      // If the link directs to the app again prevent opening it
-                      // Instead push to the history and open the modal withou leaving the page
-                      if (id.toLowerCase().includes("localhost")) {
-                        e.preventDefault();
-                        setEntryInUrl(id.toLowerCase());
-                        setPreSelectedEntry(id);
-                      }
-                    }}
-                  >
-                    {id.toLowerCase()}
-                  </Link>
-                </ListItem>
+                <Route render={({ history }) => (
+                  <ListItem key={id}>
+                    <a
+                      // href={`${id.toLowerCase()}`}
+                      onClick={e => {
+                        console.log("ID IS", id);
+                        history.push("entries/7")
+                        // If the link directs to the app again prevent opening it
+                        // Instead push to the history and open the modal withou leaving the page
+
+                        // if (id.toLowerCase().includes("localhost")) {
+                        //   e.preventDefault();
+                        //   setEntryInUrl(id.toLowerCase());
+                        //   setPreSelectedEntry(id);
+                        // }
+                      }}
+                    >
+                      {id.toLowerCase()}
+                    </a>
+                  </ListItem>
+                )} />
               ))}
             </List>
           </Fragment>
@@ -115,17 +136,18 @@ export const EntryCard = ({
             ? description.value.split(" ", 20).join(" ") + "..."
             : description.value}
         </Typography>
-
+        
 
         {!hasDetails && (
+          <Route render={({ history }) => (
 
-          <a
-            href={`${id.toLowerCase()}`}
-            onClick={null}
-          >
-            {id.toLowerCase()}
-          </a>
-
+            <a
+              href={`${id.toLowerCase()}`}
+              onClick={onClick(history ,id)}
+            >
+              {id.toLowerCase()}
+            </a>
+          )} />
         )}
 
         {!hasDetails && (
@@ -135,11 +157,6 @@ export const EntryCard = ({
                     </Button>
 
         )}
-
-
-
-
-
         {references}
         {hasDetails && (
           <div

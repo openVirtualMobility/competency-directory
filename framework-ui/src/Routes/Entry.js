@@ -1,21 +1,27 @@
-import React, { Component } from "react";
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import { Route } from "react-router-dom";
+import React, { Component } from 'react';
+import api from "../api"
 
-export default class Entry extends Component {
-
-  componentDidMount() {
-    // console.log('Fetch API here: ', this.props.match.params.id);
-    console.log("DID MOUNT!")
+class Entry extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
   }
-  
+
+  async componentDidMount() {
+    console.log(this.props.match.params.id)
+    let response = await api.getEntryWithId(this.props.match.params.id);
+    response.json().then(data => {
+      // do something with your data
+      console.log(data);
+    });
+  }
+
   render() {
     return (
-      <div>
-        <h1>Entry</h1>
-      </div>
+      <h1>{this.props.match.params.id}</h1>
     );
   }
-
 }
+
+export default Entry;

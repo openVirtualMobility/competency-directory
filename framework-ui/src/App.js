@@ -16,8 +16,8 @@ class App extends Component {
         <Route exact path="/" component={Authentication} />
         <Route exact path="/Login" component={Login} />
         <Route exact path="/Register" component={Register} />
-        <Route path="/entries" component={Dashboard} />
-        <Route path="/entry/:id" component={Entry} />
+        <Route path="/Dashboard" component={Dashboard} />
+        <Route path="/entries/:id" render={props => <Entry {...props}/>} />
       </Router>
     );
   }

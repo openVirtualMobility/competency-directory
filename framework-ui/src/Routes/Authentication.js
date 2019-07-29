@@ -10,7 +10,7 @@ export default class Authentication extends Component {
     console.log(jwt);
     if (jwt) {
       console.log("JWT FOUND!");
-      this.props.history.push('/Entries')
+      this.props.history.push('/Dashboard')
     }
   }
   
