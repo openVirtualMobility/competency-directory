@@ -86,7 +86,7 @@ class Dashboard extends Component {
       case Downshift.stateChangeTypes.clickItem:
         // On modal open add the entry to the url
         const id = changes.selectedItem.id;
-        setEntryInUrl(id);
+        // setEntryInUrl(id);
         return {
           ...changes,
           inputValue: state.inputValue,

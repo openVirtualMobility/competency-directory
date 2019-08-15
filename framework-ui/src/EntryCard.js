@@ -21,7 +21,6 @@ const onClick = (history, id) => {
     parsedId = parseInt(slicedId);
     var finalId = parsedId
   }
-  console.log(finalId);
   history.push(`entries/${finalId}`);
 
 }

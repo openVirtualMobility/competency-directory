@@ -8,15 +8,8 @@ const entries = new Router({
 
 entries
   .get('/', async (ctx, next) => {
-    console.log("hello")
     const { data } = await database.getEntries()
     console.log(ctx.header.accept);
-    // if (ctx.header.accept === "application/json; charset=utf-8") {
-    //   console.log("JSon")
-    //   ctx.data = data
-    // } else {
-    //   console.log("html")
-    // }
     ctx.data = data;
     await next()
   })

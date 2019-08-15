@@ -17,7 +17,7 @@ class App extends Component {
         <Route exact path="/Login" component={Login} />
         <Route exact path="/Register" component={Register} />
         <Route path="/Dashboard" component={Dashboard} />
-        <Route path="/entries/:id" render={props => <Entry {...props}/>} />
+        <Route path="/entries/:id(\d+)" render={props => <Entry {...props}/>} />
       </Router>
     );
   }
