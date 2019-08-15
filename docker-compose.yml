@@ -17,7 +17,7 @@ services:
     build: ./framework-api
     image: framework-api
     ports:
-      - "80:6060"
+      - "6060:6060"
     volumes:
       - ./framework-api/src/:/app
     networks:
