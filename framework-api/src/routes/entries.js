@@ -9,7 +9,8 @@ const entries = new Router({
 entries
   .get('/', async (ctx, next) => {
     const { data } = await database.getEntries()
-    ctx.data = data
+    console.log(ctx.header.accept);
+    ctx.data = data;
     await next()
   })
   .get('/:id', async (ctx, next) => {

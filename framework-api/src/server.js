@@ -1,7 +1,9 @@
 import Koa from 'koa'
 import Router from 'koa-router'
+import serve from "koa-static"
 import { context } from './database/context'
 import { entries } from './routes/entries'
+import { auth } from './routes/auth'
 import cors from '@koa/cors'
 import neo4j from 'neo4j-driver'
 import * as db from './database/database'
@@ -10,9 +12,12 @@ import { escoExample } from './routes/escoExample'
 import { competencies } from './database/competencies'
 import { references } from './routes/references'
 import { references as referenceData } from './database/references'
+import koaBody from 'koa-body'
 
 const app = new Koa()
 const router = new Router()
+
+app.use(serve("./build"))
 
 // CORS
 app.use(cors())
@@ -24,6 +29,9 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${rt}`)
 })
 
+// using the koa bodyParser 
+app.use(koaBody());
+
 // x-response-time
 app.use(async (ctx, next) => {
   const start = Date.now()
@@ -31,6 +39,7 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start
   ctx.set('X-Response-Time', `${ms}ms`)
 })
+
 
 // Set defaults for the api
 app.use(async (ctx, next) => {
@@ -64,6 +73,8 @@ router.get('/deleteAll', async (ctx, next) => {
   await next()
 })
 
+
+
 router.get('/populate', async (ctx, next) => {
   const props = competencies.map(competency => ({
     ...competency,
@@ -74,9 +85,9 @@ router.get('/populate', async (ctx, next) => {
   await ctx.session.writeTransaction(tx =>
     tx.run(
       `
-      UNWIND $props AS entry
-      CREATE (node:entry)
-      SET node = entry
+      UNWIND $props AS Entry
+      CREATE (node:Entry)
+      SET node = Entry
       `,
       { props }
     )
@@ -127,6 +138,9 @@ app
   // Entries
   .use(entries.routes())
   .use(entries.allowedMethods())
+  // Authentication
+  .use(auth.routes())
+  .use(auth.allowedMethods())
   // References
   .use(references.routes())
   .use(references.allowedMethods())
@@ -136,5 +150,6 @@ app
   // EscoExample
   .use(escoExample.routes())
   .use(escoExample.allowedMethods())
+
 
 app.listen(6060)
