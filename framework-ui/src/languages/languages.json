@@ -1,0 +1,23 @@
+{
+	"en": {
+		"openVM": "OpenVM Directory",
+		"searchEntries": "Search entries",
+		"labelAndDescription": "by label and description",
+		"language": "Language",
+		"reuse": "Reuse",
+		"description": "Description",
+		"type": "Type",
+		"showDetails": "show details"
+	},
+
+	"de": {
+		"openVM": "OpenVM Verzeichnis",
+		"searchEntries": "Durchsuche Kompetenzen",
+		"labelAndDescription": "nach Titel und Beschreibung",
+		"language": "Sprache",
+		"reuse": "Wiederverwendbarkeit",
+		"description": "Beschreibung",
+		"type": "Typ",
+		"showDetails": "zeige Details"
+	}
+}
