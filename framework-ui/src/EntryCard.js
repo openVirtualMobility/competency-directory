@@ -140,14 +140,6 @@ export const EntryCard = ({
             </a>
           )} />
         )}
-
-        {!hasDetails && (
-
-          <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
-            Show More
-                    </Button>
-
-        )}
         {references}
         {hasDetails && (
           <div

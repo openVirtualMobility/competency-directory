@@ -95,6 +95,9 @@ class Entry extends Component {
             <Typography paragraph>
               {this.state.entry.description.value}
             </Typography>
+            <Typography>
+             http://cd.openvirtualmobility.eu/entries/{this.props.match.params.id}
+            </Typography>
           </CardContent>
         </Card>
       </div>
