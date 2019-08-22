@@ -4,21 +4,40 @@ import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Downshift from "downshift";
-
+import Select from "react-select";
 import { setEntryInUrl, sortAlphabetically, searchRanked } from "./utils";
 import { EntryCard } from "./EntryCard";
 import { EntryModal } from "./EntryModal";
+import LocalizedStrings from 'react-localization';
+import { string } from "prop-types";
+var language = require("./languages/languages.json");
+
+const options = [
+  { value: 'en', label: 'English' },
+  { value: 'de', label: 'German' },
+  { value: 'fr', label: 'France' },
+];
+
+let strings = new LocalizedStrings(language);
+
 
 class Dashboard extends Component {
   state = {
     entries: [],
     referenceTypes: [],
-    urlEntry: null
+    urlEntry: null,
+    selectedOption: null,
   };
 
   async componentDidMount() {
     const getEntriesResponse = await api.getEntries();
     const getEntriesData = await getEntriesResponse.json();
+
+    // settings the language
+    let lang = localStorage.getItem("language");
+    if (lang) {
+      strings.setLanguage(lang);
+    }
     const entries = sortAlphabetically(
       getEntriesData["@graph"],
       // Tell the sort function to sort by which attribute
@@ -106,6 +125,13 @@ class Dashboard extends Component {
     }
   };
 
+  handleChange = selectedOption => {
+    // saving current used language in localstorage
+    localStorage.setItem("language", selectedOption.value);
+    strings.setLanguage(selectedOption.value);
+    this.setState({ selectedOption });
+  };
+
   render() {
     const { entries, referenceTypes, urlEntry } = this.state;
     return (
@@ -139,6 +165,7 @@ class Dashboard extends Component {
               <EntryCard
                 item={item}
                 hasDetails
+                strings={strings}
                 setPreSelectedEntry={this.setPreSelectedEntry}
                 {...downShift.getItemProps({
                   index,
@@ -157,16 +184,28 @@ class Dashboard extends Component {
           ));
 
           return (
-            <div style={{ padding: "42px 36px" }}>
-              <Typography component="h2" variant="h2" gutterBottom>
-                OpenVM Directory
-              </Typography>
+            <div style={{ padding: "42px 36px"}}>
+              <div style={{display: "flex"}}>
+                <div style={{ flexGrow: 3}}>
+                  <Typography component="h2" variant="h2" gutterBottom>
+                  {strings.openVM}
+                </Typography>
+                </div>
+                <div style={{minWidth: "30%", justifyContent: "flex-end"}}>
+                  <Select
+                    value={this.state.selectedOption}
+                    onChange={this.handleChange}
+                    options={options}
+                  />
+                </div>
+              </div>
+
               <label {...downShift.getLabelProps()}>
-                Search entries:&nbsp;&nbsp;
+                {strings.searchEntries}:&nbsp;&nbsp;
               </label>
               <Input
                 {...downShift.getInputProps({
-                  placeholder: "by label and description"
+                  placeholder: strings.labelAndDescription
                 })}
               />
               <br />
@@ -186,6 +225,7 @@ class Dashboard extends Component {
                 setPreSelectedEntry={this.setPreSelectedEntry}
                 isOpen={downShift.isOpen}
                 selectedItem={downShift.selectedItem}
+                strings={strings}
                 referenceTypes={referenceTypes}
                 closeMenu={downShift.closeMenu}
               />

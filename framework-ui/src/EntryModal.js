@@ -5,6 +5,7 @@ import { EntryCard } from "./EntryCard";
 export const EntryModal = ({
   isOpen,
   selectedItem,
+  strings,
   referenceTypes,
   closeMenu,
   setPreSelectedEntry
@@ -24,6 +25,7 @@ export const EntryModal = ({
         {selectedItem && (
           <EntryCard
             item={selectedItem}
+            strings={strings}
             referenceTypes={referenceTypes}
             setPreSelectedEntry={setPreSelectedEntry}
           />

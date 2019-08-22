@@ -8,10 +8,13 @@ export default class Authentication extends Component {
   componentDidMount() {
     let jwt = localStorage.getItem("jwt");
     console.log(jwt);
-    if (jwt) {
-      console.log("JWT FOUND!");
-      this.props.history.push('/Dashboard')
-    }
+    // if (jwt) {
+    //   console.log("JWT FOUND!");
+    //   this.props.history.push('/Dashboard')
+    // }
+
+    // directly bypassing the Authentication
+    this.props.history.push('/Dashboard')
   }
   
   render() {

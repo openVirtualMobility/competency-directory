@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import { Link, Route } from "react-router-dom"
-
 import { setEntryInUrl } from "./utils";
 
 const onClick = (history, id) => {
@@ -28,6 +27,7 @@ const onClick = (history, id) => {
 export const EntryCard = ({
   item,
   referenceTypes,
+  strings,
   hasDetails,
   setPreSelectedEntry,
   ...props
@@ -70,14 +70,6 @@ export const EntryCard = ({
                       onClick={e => {
                         console.log("ID IS", id);
                         history.push("entries/7")
-                        // If the link directs to the app again prevent opening it
-                        // Instead push to the history and open the modal withou leaving the page
-
-                        // if (id.toLowerCase().includes("localhost")) {
-                        //   e.preventDefault();
-                        //   setEntryInUrl(id.toLowerCase());
-                        //   setPreSelectedEntry(id);
-                        // }
                       }}
                     >
                       {id.toLowerCase()}
@@ -107,7 +99,7 @@ export const EntryCard = ({
         }}
       >
         <Typography color="textSecondary" gutterBottom>
-          Type: {skillType}
+         {strings.type}: {skillType}
         </Typography>
         <Typography
           variant="h6"
@@ -120,16 +112,16 @@ export const EntryCard = ({
         {!hasDetails && (
           <Fragment>
             <Chip
-              label={"Language: " + prefLabel.language}
+              label={strings.language + ":" + prefLabel.language}
               style={{ margin: "3px 7px 3px -1px", height: 22 }}
             />
             <Chip
-              label={"Reuse: " + skillReuseLevel.substr(2)}
+              label={strings.reuse + ":"  + skillReuseLevel.substr(2)}
               style={{ margin: "3px 7px 18px -1px", height: 22 }}
             />
           </Fragment>
         )}
-        <Typography variant="subtitle1">Description:</Typography>
+        <Typography variant="subtitle1">{strings.description}:</Typography>
         <Typography paragraph>
           {hasDetails
             ? description.value.split(" ", 20).join(" ") + "..."
@@ -168,7 +160,7 @@ export const EntryCard = ({
             }}
           >
             <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
-              Show Details
+              {strings.showDetails}
             </Button>
           </div>
         )}

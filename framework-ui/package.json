@@ -10,8 +10,10 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-list": "^0.8.10",
+    "react-localization": "^1.0.15",
     "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.1",
+    "react-select": "^3.0.4",
     "recompose": "^0.29.0",
     "styled-components": "^4.1.2"
   },
