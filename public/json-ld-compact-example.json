@@ -1,6 +1,6 @@
 {
-  "@context": "http://localhost:6060/context/",
-  "id": "http://localhost:6060/entries/8",
+  "@context": "http://cd.openvirtualmobility.eu/context/",
+  "id": "http://cd.openvirtualmobility.eu/entries/8",
   "skillReuseLevel": "1 Transversal",
   "skillType": "Skill or Competence",
   "isEssentialPartOf": [],
@@ -8,10 +8,10 @@
   "isSameAs": [],
   "isSimilarTo": [],
   "needsAsPrerequisite": [
-    "http://localhost:6060/entries/10",
-    "http://localhost:6060/entries/9",
-    "http://localhost:6060/entries/11",
-    "http://localhost:6060/entries/12"
+    "http://cd.openvirtualmobility.eu/entries/10",
+    "http://cd.openvirtualmobility.eu/entries/9",
+    "http://cd.openvirtualmobility.eu/entries/11",
+    "http://cd.openvirtualmobility.eu/entries/12"
   ],
   "prefLabel": {
     "language": "en",

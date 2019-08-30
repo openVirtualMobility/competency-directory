@@ -1,6 +1,8 @@
 import { references } from './references'
 import neo4j from 'neo4j-driver'
 
+var config = require("../config.json")
+
 export const getSkillTypes = async () =>
   Promise.resolve({
     meta: {},
@@ -57,11 +59,11 @@ export const getReferences = async () => {
     )
   )
   const data = records.map(entry => ({
-    sourceID: `http://localhost:6060/entries/${entry.get('sourceNode.id')}`,
-    referenceType: `http://localhost:6060/referenceTypes/${
+    sourceID: `${config.baseurl}/entries/${entry.get('sourceNode.id')}`,
+    referenceType: `${config.baseurl}/referenceTypes/${
       entry.get('reference').type
       }`,
-    targetID: `http://localhost:6060/entries/${entry.get('targetNode.id')}`,
+    targetID: `${config.baseurl}/entries/${entry.get('targetNode.id')}`,
   }))
   session.close()
   driver.close()
@@ -110,12 +112,12 @@ export const getEntries = async requestedId => {
       )
       rawReferences.forEach(({ type }, index) => {
         references[type].push(
-          `http://localhost:6060/entries/${targetNodes[index].properties.id}`
+          `${config.baseurl}/entries/${targetNodes[index].properties.id}`
         )
       })
       return {
         ...rawEntry,
-        id: `http://localhost:6060/entries/${rawEntry.id}`,
+        id: `${config.baseurl}/entries/${rawEntry.id}`,
         prefLabel: rawEntry.prefLabel.map(x => JSON.parse(x)),
         altLabel: rawEntry.altLabel.map(x => JSON.parse(x)),
         description: rawEntry.description.map(x => JSON.parse(x)),

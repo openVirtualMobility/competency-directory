@@ -7,16 +7,16 @@
         "@value": "Gaining knowledge about the culture they visit.Getting to know other cultural - based perspectives of education"
       }
     ],
-    "@id": "http://localhost:6060/entries/2",
-    "http://localhost:6060/context/isEssentialPartOf": [
+    "@id": "http://cd.openvirtualmobility.eu/entries/2",
+    "http://cd.openvirtualmobility.eu/context/isEssentialPartOf": [
       {
-        "@value": "http://localhost:6060/entries/1"
+        "@value": "http://cd.openvirtualmobility.eu/entries/1"
       }
     ],
-    "http://localhost:6060/context/isOptionalPartOf": [],
-    "http://localhost:6060/context/isSameAs": [],
-    "http://localhost:6060/context/isSimilarTo": [],
-    "http://localhost:6060/context/needsAsPrerequisite": [],
+    "http://cd.openvirtualmobility.eu/context/isOptionalPartOf": [],
+    "http://cd.openvirtualmobility.eu/context/isSameAs": [],
+    "http://cd.openvirtualmobility.eu/context/isSimilarTo": [],
+    "http://cd.openvirtualmobility.eu/context/needsAsPrerequisite": [],
     "http://www.w3.org/2004/02/skos/core#prefLabel": [
       {
         "@language": "en",

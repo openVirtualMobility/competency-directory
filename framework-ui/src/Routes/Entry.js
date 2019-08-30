@@ -8,6 +8,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import api from "../api"
 
+var config = require("../config.json")
+
 class Entry extends Component {
   constructor(props) {
     super(props);
@@ -96,7 +98,7 @@ class Entry extends Component {
               {this.state.entry.description.value}
             </Typography>
             <Typography>
-             http://cd.openvirtualmobility.eu/entries/{this.props.match.params.id}
+             {config.baseurl}/entries/{this.props.match.params.id}
             </Typography>
           </CardContent>
         </Card>
