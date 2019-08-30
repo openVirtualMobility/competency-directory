@@ -19,6 +19,7 @@ class App extends Component {
         <Route path="/Dashboard" component={Dashboard} />
         <Route path="/entries/:id(\d+)" render={props => <Entry {...props}/>} />
       </Router>
+
     );
   }
 }

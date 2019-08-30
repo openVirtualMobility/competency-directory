@@ -8,6 +8,7 @@ import Select from "react-select";
 import { setEntryInUrl, sortAlphabetically, searchRanked } from "./utils";
 import { EntryCard } from "./EntryCard";
 import { EntryModal } from "./EntryModal";
+import  Footer  from "./Footer";
 import LocalizedStrings from 'react-localization';
 import { string } from "prop-types";
 var language = require("./languages/languages.json");
@@ -135,104 +136,109 @@ class Dashboard extends Component {
   render() {
     const { entries, referenceTypes, urlEntry } = this.state;
     return (
-      <Downshift
-        itemToString={item => (item ? item.prefLabel.value : "")}
-        stateReducer={this.stateReducer}
-        defaultIsOpen={!!urlEntry}
-      >
-        {downShift => {
-          this.selectItem = downShift.selectItem;
-          this.setEntriesState = downShift.setState;
+      <div >
+        <Downshift
+          itemToString={item => (item ? item.prefLabel.value : "")}
+          stateReducer={this.stateReducer}
+          defaultIsOpen={!!urlEntry}
+        >
+          {downShift => {
+            this.selectItem = downShift.selectItem;
+            this.setEntriesState = downShift.setState;
 
-          let renderEntries = entries;
-          if (downShift.inputValue) {
-            renderEntries = searchRanked(downShift.inputValue, renderEntries);
-          }
+            let renderEntries = entries;
+            if (downShift.inputValue) {
+              renderEntries = searchRanked(downShift.inputValue, renderEntries);
+            }
 
-          const gridItems = renderEntries.map((item, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              xl={2}
-              {...downShift.getItemProps({
-                item,
-                key: item.prefLabel.value + index
-              })}
-            >
-              <EntryCard
-                item={item}
-                hasDetails
-                strings={strings}
-                setPreSelectedEntry={this.setPreSelectedEntry}
-                {...downShift.getItemProps({
-                  index,
-                  item,
-                  raised:
-                    downShift.highlightedIndex === index ||
-                    downShift.selectedItem === item,
-                  style: {
-                    height: "100%",
-                    cursor: "pointer",
-                    position: "relative"
-                  }
-                })}
-              />
-            </Grid>
-          ));
-
-          return (
-            <div style={{ padding: "42px 36px"}}>
-              <div style={{display: "flex"}}>
-                <div style={{ flexGrow: 3}}>
-                  <Typography component="h2" variant="h2" gutterBottom>
-                  {strings.openVM}
-                </Typography>
-                </div>
-                <div style={{minWidth: "30%", justifyContent: "flex-end"}}>
-                  <Select
-                    value={this.state.selectedOption}
-                    onChange={this.handleChange}
-                    options={options}
-                  />
-                </div>
-              </div>
-
-              <label {...downShift.getLabelProps()}>
-                {strings.searchEntries}:&nbsp;&nbsp;
-              </label>
-              <Input
-                {...downShift.getInputProps({
-                  placeholder: strings.labelAndDescription
-                })}
-              />
-              <br />
-              <br />
-              <br />
+            const gridItems = renderEntries.map((item, index) => (
               <Grid
-                container
-                direction="row"
-                justify="flex-start"
-                alignItems="stretch"
-                spacing={5}
-                {...downShift.getMenuProps()}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
+                {...downShift.getItemProps({
+                  item,
+                  key: item.prefLabel.value + index
+                })}
               >
-                {gridItems}
+                <EntryCard
+                  item={item}
+                  hasDetails
+                  strings={strings}
+                  setPreSelectedEntry={this.setPreSelectedEntry}
+                  {...downShift.getItemProps({
+                    index,
+                    item,
+                    raised:
+                      downShift.highlightedIndex === index ||
+                      downShift.selectedItem === item,
+                    style: {
+                      height: "100%",
+                      cursor: "pointer",
+                      position: "relative"
+                    }
+                  })}
+                />
               </Grid>
-              <EntryModal
-                setPreSelectedEntry={this.setPreSelectedEntry}
-                isOpen={downShift.isOpen}
-                selectedItem={downShift.selectedItem}
-                strings={strings}
-                referenceTypes={referenceTypes}
-                closeMenu={downShift.closeMenu}
-              />
-            </div>
-          );
-        }}
-      </Downshift>
+            ));
+
+            return (
+              <div style={{ padding: "42px 36px" }}>
+                <div style={{ display: "flex" }}>
+                  <div style={{ flexGrow: 3 }}>
+                    <Typography component="h2" variant="h2" gutterBottom>
+                      {strings.openVM}
+                    </Typography>
+                  </div>
+                  <div style={{ minWidth: "30%", justifyContent: "flex-end" }}>
+                    <Select
+                      value={this.state.selectedOption}
+                      onChange={this.handleChange}
+                      options={options}
+                    />
+                  </div>
+                </div>
+
+                <label {...downShift.getLabelProps()}>
+                  {strings.searchEntries}:&nbsp;&nbsp;
+              </label>
+                <Input
+                  {...downShift.getInputProps({
+                    placeholder: strings.labelAndDescription
+                  })}
+                />
+                <br />
+                <br />
+                <br />
+                <Grid
+                  container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="stretch"
+                  spacing={5}
+                  {...downShift.getMenuProps()}
+                >
+                  {gridItems}
+                </Grid>
+                <EntryModal
+                  setPreSelectedEntry={this.setPreSelectedEntry}
+                  isOpen={downShift.isOpen}
+                  selectedItem={downShift.selectedItem}
+                  strings={strings}
+                  referenceTypes={referenceTypes}
+                  closeMenu={downShift.closeMenu}
+                />
+              </div>
+            );
+          }}
+        </Downshift>
+        <Footer strings={strings} />
+
+      </div>
+
     );
   }
 }
