@@ -8,7 +8,7 @@
 		"description": "Description",
 		"type": "Type",
 		"showDetails": "show details",
-		"impressum": "Legal Notice",
+		"impressum": "Impressum",
 		"privacy": "Privacy Policy"
 	},
 
@@ -23,5 +23,54 @@
 		"showDetails": "zeige Details",
 		"impressum": "Impressum",
 		"privacy": "Datenschutz"
+	},
+	"nl": {
+		"openVM": "OpenVM Directory",
+		"searchEntries": "Zoeken",
+		"labelAndDescription": "door middel van een etiket en beschrijving",
+		"language": "taal",
+		"reuse": "hergebruik",
+		"description": "Beschrijving",
+		"type": "Type",
+		"showDetails": "toon details",
+		"impressum": "indruk",
+		"privacy": "gegevensbescherming"
+	},
+	"es": {
+		"openVM": "OpenVM Directorio",
+		"searchEntries": "entradas de búsqueda",
+		"labelAndDescription": "door middel van een etiket en beschrijving",
+		"language": "vocabulario",
+		"reuse": "reutilización",
+		"description": "descripción",
+		"type": "escribir a máquina",
+		"showDetails": "mostrar detalles",
+		"impressum": "impresión",
+		"privacy": "protección de datos"
+	},
+
+	"it": {
+		"openVM": "OpenVM Elenco",
+		"searchEntries": "voci di ricerca",
+		"labelAndDescription": "etichetta e descrizione",
+		"language": "linguaggio",
+		"reuse": "eimpiego",
+		"description": "descrizione",
+		"type": "modello",
+		"showDetails": "mostra dettagli",
+		"impressum": "impressionum",
+		"privacy": "intimità" 
+	},
+	"fr": {
+		"openVM": "Répertoire OpenVM",
+		"searchEntries": "Rechercher des entrées",
+		"labelAndDescription": "par étiquette et description",
+		"language": "Langue",
+		"reuse": "Réutilisation",
+		"description": "Description",
+		"type": "Type",
+		"showDetails": "Détails de l'émission",
+		"impressum": "mentions légales",
+		"privacy": "Politique de confidentialité" 
 	}
 }

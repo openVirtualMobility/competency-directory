@@ -16,6 +16,9 @@ var language = require("./languages/languages.json");
 const options = [
   { value: 'en', label: 'English' },
   { value: 'de', label: 'German' },
+  { value: 'nl', label: 'Dutch' },
+  { value: 'es', label: 'Spanish' },
+  { value: 'it', label: 'Italian' },
   { value: 'fr', label: 'France' },
 ];
 
