@@ -83,20 +83,34 @@ export const getEntries2 = async => {
   return session.run(
     'MATCH (entry:Entry) RETURN entry'
   )
-} 
+}
 
-export const getEntries = async requestedId => {
+export const getEntries = async (requestedId, language) => {
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
+
   const session = driver.session()
+
+  // constructing the query for the right language
+  const languageClause = language 
+  // since the language parameter already comes with "" we do not need to add them
+  ? `WHERE entry.language = ${language}`
+  : 'WHERE entry.language = "en"'
+
+  // constructing query for specific id
   const whereClause = requestedId
-    ? `WHERE entry.id = "${requestedId}"`
+    ? `entry.id = "${requestedId}"`
     : ''
+  var dbClause = languageClause
+    if (! whereClause == '') {
+      dbClause = languageClause + " AND " + whereClause
+    }
+
   const result = await session.writeTransaction(tx =>
     tx.run(
-      `MATCH (entry: Entry) ${whereClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${whereClause} RETURN entry, collect(relation), collect(targetNode)`
+      `MATCH (entry: Entry) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN entry, collect(relation), collect(targetNode)`
     )
   )
   const { data: referenceTypes } = await getReferenceTypes()

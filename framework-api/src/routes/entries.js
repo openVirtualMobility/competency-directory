@@ -9,13 +9,13 @@ const entries = new Router({
 
 entries
   .get('/', async (ctx, next) => {
-    const { data } = await database.getEntries()
+    const { data } = await database.getEntries(null, ctx.query.language)
     console.log(ctx.header.accept);
     ctx.data = data;
     await next()
   })
   .get('/:id', async (ctx, next) => {
-    const { data } = await database.getEntries(ctx.params.id)
+    const { data } = await database.getEntries(ctx.params.id, ctx.query.language)
     ctx.data = data
     await next()
   })

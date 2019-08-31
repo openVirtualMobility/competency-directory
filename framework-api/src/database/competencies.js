@@ -1,6 +1,7 @@
 export const competencies = [
   {
     skillType: 'Skill or Competence',
+    language: "en",
     id: '1',
     prefLabel: [
       {
@@ -21,6 +22,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '2',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -625,6 +627,26 @@ export const competencies = [
         language: 'en',
         value:
           'Demonstrate understanding of Open Education models \nImproving understanding of opportunities created by Open Education context',
+      },
+    ],
+    altLabel: [],
+    skillReuseLevel: '1 Transversal',
+  },
+  {
+    skillType: 'Knowledge',
+    id: '34',
+    language: "de",
+    prefLabel: [
+      {
+        language: 'de',
+        value: 'Verstehe offene Bildung',
+      },
+    ],
+    description: [
+      {
+        language: 'de',
+        value:
+          'Irgendwas deutsches',
       },
     ],
     altLabel: [],
