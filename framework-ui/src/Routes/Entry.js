@@ -7,8 +7,11 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import api from "../api"
+import LocalizedStrings from 'react-localization';
+var language = require("../languages/languages.json");
 
 var config = require("../config.json")
+let strings = new LocalizedStrings(language)
 
 class Entry extends Component {
   constructor(props) {
@@ -22,6 +25,7 @@ class Entry extends Component {
     console.log(this.props.match.params.id)
     var lang = localStorage.getItem("language")
     let response = await api.getEntryWithId(this.props.match.params.id, lang);
+    strings.setLanguage(lang)
     response.json().then(data => {
       console.log(data)
       // do something with your data
@@ -74,7 +78,7 @@ class Entry extends Component {
           >
 
             <Typography color="textSecondary" gutterBottom>
-              Type: {this.state.entry.skillType}
+              {strings.type}: {this.state.entry.skillType}
             </Typography>
             <Typography
               variant="h6"
@@ -86,15 +90,15 @@ class Entry extends Component {
             </Typography>
             <Fragment>
               <Chip
-                label={"Language: " + this.state.entry.prefLabel.language}
+                label={strings.language + ": " + this.state.entry.prefLabel.language}
                 style={{ margin: "3px 7px 3px -1px", height: 22 }}
               />
               <Chip
-                label={"Reuse: " + this.state.entry.skillReuseLevel.substr(2)}
+                label={strings.reuse + ": " + this.state.entry.skillReuseLevel.substr(2)}
                 style={{ margin: "3px 7px 18px -1px", height: 22 }}
               />
             </Fragment>
-            <Typography variant="subtitle1">Description:</Typography>
+            <Typography variant="subtitle1">{strings.description}:</Typography>
             <Typography paragraph>
               {this.state.entry.description.value}
             </Typography>

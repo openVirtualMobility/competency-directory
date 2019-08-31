@@ -10,7 +10,6 @@ import { EntryCard } from "./EntryCard";
 import { EntryModal } from "./EntryModal";
 import  Footer  from "./Footer";
 import LocalizedStrings from 'react-localization';
-import { string } from "prop-types";
 var language = require("./languages/languages.json");
 
 const options = [
@@ -35,7 +34,6 @@ class Dashboard extends Component {
 
   async componentDidMount() {
 
-
     // settings the language
     let lang = localStorage.getItem("language");
     if (lang) {
@@ -45,7 +43,6 @@ class Dashboard extends Component {
     }
     const getEntriesResponse = await api.getEntries(lang);
     const getEntriesData = await getEntriesResponse.json();
-    console.log(getEntriesData)
     const entries = sortAlphabetically(
       getEntriesData["@graph"],
       // Tell the sort function to sort by which attribute
