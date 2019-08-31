@@ -33,8 +33,8 @@ class Api {
     });
   
 
-  getEntryWithId = (id) =>
-    this.fetch(`/entries/${id}`, {
+  getEntryWithId = (id, lang) =>
+    this.fetch(`/entries/${id}?language=${lang}`, {
       method: "GET"
     });
 

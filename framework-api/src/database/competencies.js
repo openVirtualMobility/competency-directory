@@ -42,6 +42,8 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '3',
+    language: "en",
+
     prefLabel: [
       {
         language: 'en',
@@ -61,6 +63,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '4',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -80,6 +83,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '5',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -99,6 +103,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '6',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -118,6 +123,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '7',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -138,6 +144,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '8',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -158,6 +165,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '9',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -176,6 +184,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '10',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -195,6 +204,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '11',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -215,6 +225,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '12',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -235,6 +246,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '13',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -254,6 +266,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '14',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -274,6 +287,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '15',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -293,6 +307,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '16',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -312,6 +327,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '17',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -331,6 +347,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '18',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -350,6 +367,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '19',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -369,6 +387,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '20',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -388,6 +407,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '21',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -407,6 +427,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '22',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -426,6 +447,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '23',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -445,6 +467,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '24',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -464,6 +487,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '25',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -483,6 +507,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '26',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -502,6 +527,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '27',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -521,6 +547,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '28',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -539,6 +566,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '29',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -559,6 +587,7 @@ export const competencies = [
   {
     skillType: 'Skill or Competence',
     id: '30',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -578,6 +607,7 @@ export const competencies = [
   {
     skillType: 'Knowledge',
     id: '31',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -597,6 +627,7 @@ export const competencies = [
   {
     skillType: 'Knowledge',
     id: '32',
+    language: "en",
     prefLabel: [
       {
         language: 'en',
@@ -616,6 +647,7 @@ export const competencies = [
   {
     skillType: 'Knowledge',
     id: '33',
+    language: "en",
     prefLabel: [
       {
         language: 'en',

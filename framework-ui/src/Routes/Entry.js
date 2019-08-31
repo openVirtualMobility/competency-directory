@@ -20,7 +20,8 @@ class Entry extends Component {
 
   async componentDidMount() {
     console.log(this.props.match.params.id)
-    let response = await api.getEntryWithId(this.props.match.params.id);
+    var lang = localStorage.getItem("language")
+    let response = await api.getEntryWithId(this.props.match.params.id, lang);
     response.json().then(data => {
       console.log(data)
       // do something with your data
