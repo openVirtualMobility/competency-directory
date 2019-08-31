@@ -634,12 +634,32 @@ export const competencies = [
   },
   {
     skillType: 'Knowledge',
-    id: '34',
+    id: '2',
     language: "de",
     prefLabel: [
       {
         language: 'de',
         value: 'Verstehe offene Bildung',
+      },
+    ],
+    description: [
+      {
+        language: 'de',
+        value:
+          'Irgendwas deutsches',
+      },
+    ],
+    altLabel: [],
+    skillReuseLevel: '1 Transversal',
+  },
+  {
+    skillType: 'Knowledge',
+    id: '3',
+    language: "de",
+    prefLabel: [
+      {
+        language: 'de',
+        value: 'Verstehe irgendwas',
       },
     ],
     description: [

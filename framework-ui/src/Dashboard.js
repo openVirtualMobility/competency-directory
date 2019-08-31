@@ -24,6 +24,7 @@ const options = [
 
 let strings = new LocalizedStrings(language);
 
+
 class Dashboard extends Component {
   state = {
     entries: [],
@@ -33,14 +34,18 @@ class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    const getEntriesResponse = await api.getEntries();
-    const getEntriesData = await getEntriesResponse.json();
+
 
     // settings the language
     let lang = localStorage.getItem("language");
     if (lang) {
       strings.setLanguage(lang);
+    } else {
+      lang = "en"
     }
+    const getEntriesResponse = await api.getEntries(lang);
+    const getEntriesData = await getEntriesResponse.json();
+    console.log(getEntriesData)
     const entries = sortAlphabetically(
       getEntriesData["@graph"],
       // Tell the sort function to sort by which attribute
@@ -128,11 +133,20 @@ class Dashboard extends Component {
     }
   };
 
-  handleChange = selectedOption => {
+  handleChange = async selectedOption => {
     // saving current used language in localstorage
     localStorage.setItem("language", selectedOption.value);
     strings.setLanguage(selectedOption.value);
     this.setState({ selectedOption });
+    const getEntriesResponse = await api.getEntries(selectedOption.value);
+    const getEntriesData = await getEntriesResponse.json();
+    console.log(getEntriesData)
+    const entries = sortAlphabetically(
+      getEntriesData["@graph"],
+      // Tell the sort function to sort by which attribute
+      entry => entry.prefLabel.value
+    );
+    this.setState({ entries })
   };
 
   render() {

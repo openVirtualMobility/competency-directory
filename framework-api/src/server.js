@@ -25,6 +25,7 @@ app.use(cors())
 
 // logger
 app.use(async (ctx, next) => {
+  ctx.url = ctx.url.replace(/%22/g, "\"");
   await next()
   const rt = ctx.response.get('X-Response-Time')
   console.log(`${ctx.method} ${ctx.url} - ${rt}`)

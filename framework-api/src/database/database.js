@@ -94,25 +94,44 @@ export const getEntries = async (requestedId, language) => {
   const session = driver.session()
 
   // constructing the query for the right language
-  const languageClause = language 
-  // since the language parameter already comes with "" we do not need to add them
-  ? `WHERE entry.language = ${language}`
-  : 'WHERE entry.language = "en"'
+  var languageClause = language
+    ? `WHERE entry.language = "${language}"`
+    : 'WHERE entry.language = "en"'
 
   // constructing query for specific id
   const whereClause = requestedId
     ? `entry.id = "${requestedId}"`
     : ''
   var dbClause = languageClause
-    if (! whereClause == '') {
-      dbClause = languageClause + " AND " + whereClause
-    }
+  if (!whereClause == '') {
+    dbClause = languageClause + " AND " + whereClause
+  }
 
-  const result = await session.writeTransaction(tx =>
+  var result = await session.writeTransaction(tx =>
     tx.run(
       `MATCH (entry: Entry) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN entry, collect(relation), collect(targetNode)`
     )
   )
+  console.log(result.records.length)
+  if (result.records.length == 0) {
+    // if no entries are found set default to english and query again
+    // constructing the query for the right language
+    var languageClause = 'WHERE entry.language = "en"'
+
+    // constructing query for specific id
+    const whereClause = requestedId
+      ? `entry.id = "${requestedId}"`
+      : ''
+    var dbClause = languageClause
+    if (!whereClause == '') {
+      dbClause = languageClause + " AND " + whereClause
+    }
+    result = await session.writeTransaction(tx =>
+      tx.run(
+        `MATCH (entry: Entry) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN entry, collect(relation), collect(targetNode)`
+      )
+    )
+  }
   const { data: referenceTypes } = await getReferenceTypes()
   const referenceKeys = referenceTypes.map(({ id }) => id)
   const data = result.records

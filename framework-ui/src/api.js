@@ -7,7 +7,8 @@ class Api {
   fetch = (path, ...rest) =>
     fetch(`${this.baseUrl}${path}`, {
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        'Accept': 'application/json; charset=utf-8',
       },
       ...rest,
     });
@@ -22,13 +23,15 @@ class Api {
       ...rest,
     });
 
-  getEntries = () => {
-    var userLang = localStorage.get("language");
-    userLang ? language="?language="+userLang : language='?language="en"'
-    this.fetch("/entries"+language, {
-      method: "GET"
+  getEntries = (lang) => 
+    this.fetch('/entries?language='+lang, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json; charset=utf-8',
+        'Content-Type': 'application/json; charset=utf-8'
+      },
     });
-  }
+  
 
   getEntryWithId = (id) =>
     this.fetch(`/entries/${id}`, {
@@ -68,5 +71,5 @@ class Api {
       });
 }
 
-export default new Api("");
+export default new Api("http://localhost:6060");
 
