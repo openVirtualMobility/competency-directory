@@ -24,7 +24,6 @@ const options = [
 
 let strings = new LocalizedStrings(language);
 
-
 class Dashboard extends Component {
   state = {
     entries: [],
