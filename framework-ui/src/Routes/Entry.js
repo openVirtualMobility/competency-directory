@@ -24,6 +24,7 @@ class Entry extends Component {
   async componentDidMount() {
     console.log(this.props.match.params.id)
     var lang = localStorage.getItem("language")
+    if (!lang) lang= Object.getOwnPropertyNames(language).pop() || "en";  // in case of unset language use first or EN
     let response = await api.getEntryWithId(this.props.match.params.id, lang);
     strings.setLanguage(lang)
     response.json().then(data => {

@@ -30,7 +30,7 @@ class Footer extends Component {
             display: "flex", alignItems: "center", padding: 10,
             justifyContent: "center", height: 150
           }}>
-            <img style={{ margin: 10, paddingBottom: 10, height: 80 }} src={require("./assets/erasmus+.jpg")} />
+            <img style={{ margin: 10, paddingBottom: 10, height: 80 }} src={require("./assets/erasmus+.png")} />
             <img style={{ margin: 10 }} src={require("./assets/openVM-logo.png")} />
           </div>
 

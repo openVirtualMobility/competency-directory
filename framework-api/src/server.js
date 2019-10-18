@@ -31,6 +31,28 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${rt}`)
 })
 
+// detect GET of any deep-link by browsers (text/html clients) and send them the index.html instead
+app.use( async (ctx, next) => {
+  if (ctx.request.method != 'GET') {
+    await next();
+    return;
+  }
+  // in case client accepts html and json but html is of higher prio (lower index)  send the website
+  // otherwise send the json API answer
+  switch (ctx.accepts('html', 'json')) {
+    case 'html':
+      console.log("Sending default html page")
+      await koaSend(ctx, 'index.html', { root: './build' });
+      break;
+    case 'json':
+      await next();
+      break;
+    default:
+      await next();
+      // ctx.throw(406, 'client must accept html or json');
+  }
+});
+
 // using the koa bodyParser
 app.use(koaBody());
 
@@ -48,6 +70,7 @@ app.use(async (ctx, next) => {
   ctx.type = 'application/json'
   await next()
 })
+
 
 // Context
 router.get('/context', async (ctx, next) => {
@@ -153,24 +176,5 @@ app
   // EscoExample
   .use(escoExample.routes())
   .use(escoExample.allowedMethods())
-
-// detect GET of any deep-link by browsers (text/html clients) and send them the index.html instead
-app.use( async (ctx, next) => {
-  if (ctx.request.method != 'GET' || ctx.body != undefined) {
-    await next();
-    return;
-  }
-  // in case client accepts html and json but html is of higher prio (lower index)  send the website
-  // otherwise send the json API answer
-  switch (ctx.accepts('html', 'json')) {
-    case 'html':
-      await koaSend(ctx, 'index.html', { root: './build' });
-      break;
-    case 'json':
-      await next();
-      break;
-    default: ctx.throw(406, 'client must accept html or json');
-  }
-});
 
 app.listen(6060)
