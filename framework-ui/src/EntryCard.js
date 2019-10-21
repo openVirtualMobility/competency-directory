@@ -84,6 +84,7 @@ export const EntryCard = ({
     }
   }
   return (
+    <div>
     <Card
       onClick={e => e.stopPropagation()}
       style={{ padding: "18px 12px", maxWidth: 420 }}
@@ -158,5 +159,7 @@ export const EntryCard = ({
         )}
       </CardContent>
     </Card>
+    </div>
+
   );
 };

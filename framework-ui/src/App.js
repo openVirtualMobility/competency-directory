@@ -13,7 +13,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route exact path="/" component={Authentication} />
+        <Route exact path="/" component={Authentication}/>
         <Route exact path="/Login" component={Login} />
         <Route exact path="/Register" component={Register} />
         <Route path="/Dashboard" component={Dashboard} />
