@@ -15,7 +15,18 @@ entries
     await next()
   })
   .get('/:id', async (ctx, next) => {
-    const { data } = await database.getEntries(ctx.params.id, ctx.query.language)
+    const { data } = await database.getEntries(
+      ctx.params.id,
+      ctx.query.language
+    )
+    ctx.data = data
+    await next()
+  })
+  .patch('/:id', async (ctx, next) => {
+    const { data } = await database.updateEntry(
+      ctx.params.id,
+      ctx.query.language
+    )
     ctx.data = data
     await next()
   })
@@ -31,7 +42,7 @@ entries
     const entries = ctx.data.map(date => {
       return {
         ...date,
-        '@context': config.baseurl+'/context/',
+        '@context': config.baseurl + '/context/',
       }
     })
     ctx.entries = entries
@@ -42,7 +53,7 @@ entries
       ctx.body = await jsonld.expand(ctx.entries)
     } else {
       ctx.body = await jsonld.compact(ctx.entries, {
-        '@context': config.baseurl+'/context/',
+        '@context': config.baseurl + '/context/',
       })
     }
     await next()

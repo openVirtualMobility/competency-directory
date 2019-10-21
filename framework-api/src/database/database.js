@@ -1,7 +1,7 @@
 import { references } from './references'
 import neo4j from 'neo4j-driver'
 
-var config = require("../config.json")
+var config = require('../config.json')
 
 export const getSkillTypes = async () =>
   Promise.resolve({
@@ -73,15 +73,30 @@ export const getReferences = async () => {
   })
 }
 
-export const getEntries2 = async => {
+export const updateEntry = async (id, lang, newEntry) => {
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
   const session = driver.session()
 
+  const {
+    description,
+    skillReuseLevel,
+    skillType,
+    prefLabel,
+    language,
+    altLabel } = newEntry
+
   return session.run(
-    'MATCH (entry:Entry) RETURN entry'
+    'MATCH (entry:Entry {id: {id}}) set entry.skillReuseLevel = {skillReuseLevel}, entry.skillType = {skillType}, entry.prefLabel = {prefLabel}, entry.language = {language}, entry.altLabel = altLabel, entry.description = description RETURN entry', 
+    {
+      skillReuseLevel: skillReuseLevel,
+      skillType: skillType,
+      prefLabel: prefLabel,
+      language: language,
+      description: description
+    }
   )
 }
 
@@ -99,12 +114,10 @@ export const getEntries = async (requestedId, language) => {
     : 'WHERE entry.language = "en"'
 
   // constructing query for specific id
-  const whereClause = requestedId
-    ? `entry.id = "${requestedId}"`
-    : ''
+  const whereClause = requestedId ? `entry.id = "${requestedId}"` : ''
   var dbClause = languageClause
   if (!whereClause == '') {
-    dbClause = languageClause + " AND " + whereClause
+    dbClause = languageClause + ' AND ' + whereClause
   }
 
   var result = await session.writeTransaction(tx =>
@@ -112,19 +125,16 @@ export const getEntries = async (requestedId, language) => {
       `MATCH (entry: Entry) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN entry, collect(relation), collect(targetNode)`
     )
   )
-  console.log(result.records.length)
   if (result.records.length == 0) {
     // if no entries are found set default to english and query again
     // constructing the query for the right language
     var languageClause = 'WHERE entry.language = "en"'
 
     // constructing query for specific id
-    const whereClause = requestedId
-      ? `entry.id = "${requestedId}"`
-      : ''
+    const whereClause = requestedId ? `entry.id = "${requestedId}"` : ''
     var dbClause = languageClause
     if (!whereClause == '') {
-      dbClause = languageClause + " AND " + whereClause
+      dbClause = languageClause + ' AND ' + whereClause
     }
     result = await session.writeTransaction(tx =>
       tx.run(
@@ -173,24 +183,28 @@ export const createUser = async (username, password) => {
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
   const session = driver.session()
-  return await session.run('CREATE (user:User {username: {username}, password: { password }}) RETURN user', {
-    username: username,
-    // here would be the hashing
-    password: password,
-
-  }).then(results => {
-    return results.records;
-  })
+  return await session
+    .run(
+      'CREATE (user:User {username: {username}, password: { password }}) RETURN user',
+      {
+        username: username,
+        // here would be the hashing
+        password: password,
+      }
+    )
+    .then(results => {
+      return results.records
+    })
 }
 
-export const getUserWithUsername = async (username) => {
+export const getUserWithUsername = async username => {
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
   const session = driver.session()
   return session.run('MATCH (user:User {username: {username}}) RETURN user', {
-    username: username
+    username: username,
   })
 }
 
@@ -200,8 +214,11 @@ export const getUserWithUsernameAndPassword = async (username, password) => {
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
   const session = driver.session()
-  return session.run('MATCH (user:User {username: {username}, password: {password}}) RETURN user', {
-    username: username,
-    password: password
-  })
+  return session.run(
+    'MATCH (user:User {username: {username}, password: {password}}) RETURN user',
+    {
+      username: username,
+      password: password,
+    }
+  )
 }
