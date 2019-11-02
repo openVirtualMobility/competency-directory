@@ -7,6 +7,7 @@ import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import Footer from "../Footer"
 import api from "../api"
 import LocalizedStrings from 'react-localization';
 import backButton from "../assets/arrow-left.svg"
@@ -57,9 +58,8 @@ class Entry extends Component {
 
   entryPage = () => {
     return (
-      <div>
+      <div style={{height: "100%"}}>
         <div style={{ margin: 10 }}>
-
           <Link href="/Dashboard" variant="body2">
             <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
               <img src={backButton} alt="Logo" />
@@ -72,8 +72,8 @@ class Entry extends Component {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "100vh",
-          margin: 20,
+          height: "80vh",
+          margin: 10,
           outline: "none"
         }}>
           <Card
@@ -121,6 +121,7 @@ class Entry extends Component {
             </CardContent>
           </Card>
         </div>
+        <Footer strings={strings} />
       </div>
 
     );

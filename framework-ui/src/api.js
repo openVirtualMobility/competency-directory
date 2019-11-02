@@ -71,4 +71,4 @@ class Api {
       });
 }
 
-export default new Api(""); 
+export default new Api("http://localhost:6060"); 
