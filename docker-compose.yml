@@ -1,19 +1,19 @@
 version: "3"
 services:
 # client-app build folder has to be copied to framework-api
-#  client-app:
-#    build: ./framework-ui
-#    image: framework-ui
-#    deploy:
-#      replicas: 1
-#      restart_policy:
-#        condition: on-failure
-#    ports:
-#      - "3000:3000"
-#    volumes:
-#      - ./framework-ui/:/app
-#    networks:
-#      - intranet
+  client-app:
+    build: ./framework-ui
+    image: framework-ui
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./framework-ui/:/app
+    networks:
+      - intranet
   server-app:
     build: ./framework-api
     image: framework-api

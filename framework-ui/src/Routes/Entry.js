@@ -9,7 +9,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import api from "../api"
 import LocalizedStrings from 'react-localization';
-import backButton from "../assets/arrow-left.svg"
+import backButton from "../assets/arrow-left.svg";
+import editButton from "../assets/edit.svg";
 var language = require("../languages/languages.json");
 var config = require("../config.json")
 let strings = new LocalizedStrings(language)
@@ -58,15 +59,33 @@ class Entry extends Component {
   entryPage = () => {
     return (
       <div>
-        <div style={{ margin: 10 }}>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          <div style={{ margin: 10 }}>
 
-          <Link href="/Dashboard" variant="body2">
-            <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
-              <img src={backButton} alt="Logo" />
-              <p style={{ marginLeft: 5 }}>Go back</p>
-            </Button>
-          </Link>
+            <Link href="/Dashboard" variant="body2">
+              <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
+                <img src={backButton} alt="Logo" />
+                <p style={{ marginLeft: 5 }}>Go back</p>
+              </Button>
+            </Link>
+          </div>
+          <div style={{ margin: 10, alignSelf: "flex-end" }}>
+            <Link href="/entries/23/edit">
+              <Button variant="outlined" style={{ alignSelf: "flex-end" }}
+                onClick={() => {
+                  // this.props.history.push("/Dashboard")
+                  // console.log(this.props)
+                  // this.props.navigation.history.push("/entries/" + this.props.match.params.id + "/edit")
+                }}
+              >
+                <img src={editButton} alt="Logo" />
+                <p style={{ marginLeft: 5 }}>edit</p>
+              </Button>
+            </Link>
+
+          </div>
         </div>
+
 
         <div style={{
           display: "flex",

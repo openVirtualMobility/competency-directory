@@ -23,15 +23,15 @@ class Api {
       ...rest,
     });
 
-  getEntries = (lang) => 
-    this.fetch('/entries?language='+lang, {
+  getEntries = (lang) =>
+    this.fetch('/entries?language=' + lang, {
       method: "GET",
       headers: {
         'Accept': 'application/json; charset=utf-8',
         'Content-Type': 'application/json; charset=utf-8'
       },
     });
-  
+
 
   getEntryWithId = (id, lang) =>
     this.fetch(`/entries/${id}?language=${lang}`, {
@@ -71,4 +71,4 @@ class Api {
       });
 }
 
-export default new Api(""); 
+export default new Api("http://localhost:6060"); 
