@@ -6,19 +6,20 @@ import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { Link, Route } from "react-router-dom"
-import { setEntryInUrl } from "./utils";
+import { Route } from "react-router-dom"
+import Link from '@material-ui/core/Link';
 
 const onClick = (history, id) => {
 
   var slicedId = id.slice(-2);
   var parsedId = parseInt(slicedId);
-  if (! isNaN(parsedId)) {
-    var finalId = parsedId 
+  var finalId;
+  if (!isNaN(parsedId)) {
+    finalId = parsedId
   } else {
     slicedId = id.slice(-1);
     parsedId = parseInt(slicedId);
-    var finalId = parsedId
+    finalId = parsedId
   }
   history.push(`entries/${finalId}`);
 
@@ -65,15 +66,14 @@ export const EntryCard = ({
               {referenceItems.map(id => (
                 <Route render={({ history }) => (
                   <ListItem key={id}>
-                    <a
-                      // href={`${id.toLowerCase()}`}
+                    <Link
                       onClick={e => {
                         console.log("ID IS", id);
                         history.push("entries/7")
                       }}
                     >
                       {id.toLowerCase()}
-                    </a>
+                    </Link>
                   </ListItem>
                 )} />
               ))}
@@ -85,80 +85,80 @@ export const EntryCard = ({
   }
   return (
     <div>
-    <Card
-      onClick={e => e.stopPropagation()}
-      style={{ padding: "18px 12px", maxWidth: 420 }}
-      {...props}
-    >
-      <CardContent
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "baseline",
-          height: "100%",
-          boxSizing: "border-box"
-        }}
+      <Card
+        onClick={e => e.stopPropagation()}
+        style={{ padding: "18px 12px", maxWidth: 420 }}
+        {...props}
       >
-        <Typography color="textSecondary" gutterBottom>
-         {strings.type}: {skillType}
-        </Typography>
-        <Typography
-          variant="h6"
-          component="h2"
-          style={{ lineHeight: 1.2 }}
-          gutterBottom
+        <CardContent
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "baseline",
+            height: "100%",
+            boxSizing: "border-box"
+          }}
         >
-          {prefLabel.value}
-        </Typography>
-        {!hasDetails && (
-          <Fragment>
-            <Chip
-              label={strings.language + ":" + prefLabel.language}
-              style={{ margin: "3px 7px 3px -1px", height: 22 }}
-            />
-            <Chip
-              label={strings.reuse + ":"  + skillReuseLevel.substr(2)}
-              style={{ margin: "3px 7px 18px -1px", height: 22 }}
-            />
-          </Fragment>
-        )}
-        <Typography variant="subtitle1">{strings.description}:</Typography>
-        <Typography paragraph>
-          {hasDetails
-            ? description.value.split(" ", 20).join(" ") + "..."
-            : description.value}
-        </Typography>
-        
-
-        {!hasDetails && (
-          <Route render={({ history }) => (
-
-            <a
-              href={`${id.toLowerCase()}`}
-              onClick={onClick(history ,id)}
-            >
-              {id.toLowerCase()}
-            </a>
-          )} />
-        )}
-        {references}
-        {hasDetails && (
-          <div
-            style={{
-              flexGrow: 1,
-              width: "100%",
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "flex-end"
-            }}
+          <Typography color="textSecondary" gutterBottom>
+            {strings.type}: {skillType}
+          </Typography>
+          <Typography
+            variant="h6"
+            component="h2"
+            style={{ lineHeight: 1.2 }}
+            gutterBottom
           >
-            <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
-              {strings.showDetails}
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+            {prefLabel.value}
+          </Typography>
+          {!hasDetails && (
+            <Fragment>
+              <Chip
+                label={strings.language + ":" + prefLabel.language}
+                style={{ margin: "3px 7px 3px -1px", height: 22 }}
+              />
+              <Chip
+                label={strings.reuse + ":" + skillReuseLevel.substr(2)}
+                style={{ margin: "3px 7px 18px -1px", height: 22 }}
+              />
+            </Fragment>
+          )}
+          <Typography variant="subtitle1">{strings.description}:</Typography>
+          <Typography paragraph>
+            {hasDetails
+              ? description.value.split(" ", 20).join(" ") + "..."
+              : description.value}
+          </Typography>
+
+
+          {!hasDetails && (
+            <Route render={({ history }) => (
+
+              <Link
+                to={`${id.toLowerCase()}`}
+                onClick={onClick(history, id)}
+              >
+                {id.toLowerCase()}
+              </Link>
+            )} />
+          )}
+          {references}
+          {hasDetails && (
+            <div
+              style={{
+                flexGrow: 1,
+                width: "100%",
+                display: "flex",
+                alignItems: "flex-end",
+                justifyContent: "flex-end"
+              }}
+            >
+              <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
+                {strings.showDetails}
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
 
   );

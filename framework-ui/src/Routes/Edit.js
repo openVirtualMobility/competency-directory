@@ -1,18 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
-import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import TextField from '@material-ui/core/TextField';
 import api from "../api"
 import LocalizedStrings from 'react-localization';
 import backButton from "../assets/arrow-left.svg";
 import editButton from "../assets/edit.svg";
 var language = require("../languages/languages.json");
-var config = require("../config.json")
 let strings = new LocalizedStrings(language)
 
 class Edit extends Component {
@@ -70,12 +67,13 @@ class Edit extends Component {
                         </Link>
                     </div>
                     <div style={{ margin: 10, alignSelf: "flex-end" }}>
-                        <Link href={"/entries/" + this.props.match.params.id + "/edit"} variant="body2">
-                            <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
-                                <img src={editButton} alt="Logo" />
-                                <p style={{ marginLeft: 5 }}>save</p>
-                            </Button>
-                        </Link>
+                        <Button variant="outlined" style={{ alignSelf: "flex-end" }}
+                            onClick={() => { console.log("SAVE TO API") }}
+
+                        >
+                            <img src={editButton} alt="Logo" />
+                            <p style={{ marginLeft: 5 }}>save</p>
+                        </Button>
                     </div>
                 </div>
 
@@ -105,6 +103,36 @@ class Edit extends Component {
                             <Typography color="textSecondary" gutterBottom>
                                 {strings.type}: {this.state.entry.skillType}
                             </Typography>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Type"
+                                value={this.state.entry.skillType}
+                                name="Type"
+                            // onChange={(e) => state.username = e.target.value}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Title"
+                                value={this.state.entry.prefLabel.value}
+                                name="Title"
+                            // onChange={(e) => state.username = e.target.value}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Description"
+                                value={this.state.entry.description.value}
+                                name="Description"
+                                rows="9"
+                                multiline
+                            // onChange={(e) => state.username = e.target.value}
+                            />
+
                             <Typography
                                 variant="h6"
                                 component="h2"
@@ -116,7 +144,7 @@ class Edit extends Component {
                         </CardContent>
                     </Card>
                 </div>
-            </div>
+            </div >
 
         );
     }

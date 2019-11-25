@@ -1,11 +1,6 @@
-
 import React, { Component } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
-import LocalizedStrings from 'react-localization';
-var language = require("./languages/languages.json");
-
-let strings = new LocalizedStrings(language);
 
 class Footer extends Component {
   constructor(props) {
@@ -30,15 +25,14 @@ class Footer extends Component {
             display: "flex", alignItems: "center", padding: 10,
             justifyContent: "center", height: 150
           }}>
-            <img style={{ margin: 10, paddingBottom: 10, height: 80 }} src={require("./assets/erasmus+.png")} />
-            <img style={{ margin: 10 }} src={require("./assets/openVM-logo.png")} />
+            <img style={{ margin: 10, paddingBottom: 10, height: 80 }} src={require("./assets/erasmus+.png")} alt="logo of erasmus+"/>
+            <img style={{ margin: 10 }} src={require("./assets/openVM-logo.png")} alt="logo of openVM"/>
           </div>
 
         </div>
         <div style={{ display: "flex", justifyContent: "center", width: "40%", alignSelf: "center", alignItems: "center" }}>
-          <Link style={{margin: 10}} href="https://www.beuth-hochschule.de/impressum">{this.props.strings.impressum}</Link>
-          <Link style={{margin: 10}} href="https://www.beuth-hochschule.de/datenschutz">{this.props.strings.privacy}</Link>
-
+          <Link style={{ margin: 10 }} href="https://www.beuth-hochschule.de/impressum">{this.props.strings.impressum}</Link>
+          <Link style={{ margin: 10 }} href="https://www.beuth-hochschule.de/datenschutz">{this.props.strings.privacy}</Link>
         </div>
       </div>
     );

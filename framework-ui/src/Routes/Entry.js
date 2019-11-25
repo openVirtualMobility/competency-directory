@@ -5,8 +5,6 @@ import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import api from "../api"
 import LocalizedStrings from 'react-localization';
 import backButton from "../assets/arrow-left.svg";

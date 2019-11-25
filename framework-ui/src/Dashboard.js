@@ -5,10 +5,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Downshift from "downshift";
 import Select from "react-select";
-import { setEntryInUrl, sortAlphabetically, searchRanked } from "./utils";
+import { sortAlphabetically, searchRanked } from "./utils";
 import { EntryCard } from "./EntryCard";
 import { EntryModal } from "./EntryModal";
-import  Footer  from "./Footer";
+import Footer from "./Footer";
 import LocalizedStrings from 'react-localization';
 var language = require("./languages/languages.json");
 
@@ -108,9 +108,6 @@ class Dashboard extends Component {
     switch (changes.type) {
       case Downshift.stateChangeTypes.keyDownEnter:
       case Downshift.stateChangeTypes.clickItem:
-        // On modal open add the entry to the url
-        const id = changes.selectedItem.id;
-        // setEntryInUrl(id);
         return {
           ...changes,
           inputValue: state.inputValue,

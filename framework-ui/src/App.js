@@ -6,7 +6,7 @@ import Authentication from "./Routes/Authentication"
 import Entry from "./Routes/Entry"
 import Edit from "./Routes/Edit"
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 class App extends Component {
   state = {
   };
