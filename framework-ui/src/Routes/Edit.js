@@ -6,11 +6,11 @@ import Link from '@material-ui/core/Link';
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import api from "../api"
+import { sortAlphabetically } from "../utils";
 import LocalizedStrings from 'react-localization';
 import backButton from "../assets/arrow-left.svg";
 import editButton from "../assets/edit.svg";
 import Select from "react-select";
-
 var language = require("../languages/languages.json");
 let strings = new LocalizedStrings(language)
 
@@ -39,18 +39,32 @@ const reuseOptions = [
     },
 ]
 
+
 class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
-            entry: null
+            entry: null,
+            entryOptions: []
         };
     }
+
 
     async componentDidMount() {
         var lang = localStorage.getItem("language")
         if (!lang) lang = Object.getOwnPropertyNames(language).pop() || "en";  // in case of unset language use first or EN
+        const getEntriesResponse = await api.getEntries(lang);
+        const getEntriesData = await getEntriesResponse.json();
+        const entries = sortAlphabetically(
+            getEntriesData["@graph"],
+            // Tell the sort function to sort by which attribute
+            entry => entry.prefLabel.value
+        );
+
+        // builds the objects that are used in the dropdown selection for the relations
+        this.buildRelationsDropdown(entries)
+
         let response = await api.getEntryWithId(this.props.match.params.id, lang);
         strings.setLanguage(lang)
         response.json().then(data => {
@@ -66,6 +80,21 @@ class Edit extends Component {
                 loading: false
             })
         });
+    }
+
+    buildRelationsDropdown(entries) {
+        console.log(entries)
+        let newEntryOptions = []
+        entries.forEach(entry => {
+            console.log(entry)
+            let newOption = { value: entry, label: entry.prefLabel.value }
+            newEntryOptions.push(newOption)
+        });
+
+        this.setState({
+            entryOptions: newEntryOptions
+        })
+
     }
 
     setDropdownDefault(options, entryValue) {
@@ -85,7 +114,7 @@ class Edit extends Component {
         entry.language = this.state.selectedLanguageOption.value
         entry.skillType = this.state.selectedTypeOption.value
         entry.skillReuseLevel = this.state.selectedReuseOption.value
-        console.log(entry)
+        console.log(this.state.entryOptions)
     }
 
     handleChange = async selectedOption => {
@@ -175,7 +204,7 @@ class Edit extends Component {
                 }}>
                     <Card
                         onClick={e => e.stopPropagation()}
-                        style={{ flex: 1, padding: "18px 12px", maxWidth: 420, }}
+                        style={{ flex: 1, padding: "18px 12px", maxWidth: 800, }}
                     >
                         <CardContent
                             style={{
@@ -234,6 +263,64 @@ class Edit extends Component {
                                 multiline
                                 onChange={(e) => this.handleDescriptionChange(e.target.value)}
                             />
+                            <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle1" style={{ paddingRight: 10 }}>
+                                    is Essential Part of:
+                                </Typography>
+                                <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                                    <Select
+                                        value={this.state.selectedReuseOption}
+                                        defaultValue={this.state.selectedReuseOption}
+                                        onChange={this.handleReuseChange}
+                                        isMulti
+                                        options={this.state.entryOptions}
+                                        placeholder="Reuse"
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle1" style={{ paddingRight: 10 }}>
+                                    is Optional Part of:
+                                </Typography>
+                                <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                                    <Select
+                                        value={this.state.selectedReuseOption}
+                                        defaultValue={this.state.selectedReuseOption}
+                                        onChange={this.handleReuseChange}
+                                        options={reuseOptions}
+                                        placeholder="Reuse"
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle1" style={{ paddingRight: 10 }}>
+                                    is similar to:
+                                </Typography>
+                                <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                                    <Select
+                                        value={this.state.selectedReuseOption}
+                                        defaultValue={this.state.selectedReuseOption}
+                                        onChange={this.handleReuseChange}
+                                        options={reuseOptions}
+                                        placeholder="Reuse"
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" }}>
+                                <Typography variant="subtitle1" style={{ paddingRight: 10 }}>
+                                    needs as prerequisite:
+                                </Typography>
+                                <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                                    <Select
+                                        value={this.state.selectedReuseOption}
+                                        defaultValue={this.state.selectedReuseOption}
+                                        onChange={this.handleReuseChange}
+                                        options={reuseOptions}
+                                        placeholder="Reuse"
+                                    />
+                                </div>
+                            </div>
+
                         </CardContent>
                     </Card>
                 </div>
