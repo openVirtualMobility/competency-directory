@@ -65,16 +65,20 @@ export const EntryCard = ({
             <List dense>
               {referenceItems.map(id => (
                 <Route render={({ history }) => (
-                  <ListItem key={id}>
-                    <Link
-                      onClick={e => {
-                        console.log("ID IS", id);
-                        history.push("entries/7")
-                      }}
-                    >
-                      {id.toLowerCase()}
-                    </Link>
-                  </ListItem>
+                  <div key={id}>
+
+                    <ListItem>
+                      <Link
+                        onClick={e => {
+                          console.log("ID IS", id);
+                          history.push("entries/7")
+                        }}
+                      >
+                        {id.toLowerCase()}
+                      </Link>
+                    </ListItem>
+                  </div>
+
                 )} />
               ))}
             </List>

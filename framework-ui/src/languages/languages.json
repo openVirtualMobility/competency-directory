@@ -9,9 +9,9 @@
 		"type": "Type",
 		"showDetails": "show details",
 		"impressum": "Impressum",
-		"privacy": "Privacy Policy"
+		"privacy": "Privacy Policy",
+		"title": "title"
 	},
-
 	"de": {
 		"openVM": "OpenVM Verzeichnis",
 		"searchEntries": "Durchsuche Kompetenzen",
@@ -48,7 +48,6 @@
 		"impressum": "impresión",
 		"privacy": "protección de datos"
 	},
-
 	"it": {
 		"openVM": "OpenVM Elenco",
 		"searchEntries": "voci di ricerca",
@@ -59,7 +58,7 @@
 		"type": "modello",
 		"showDetails": "mostra dettagli",
 		"impressum": "impressionum",
-		"privacy": "intimità" 
+		"privacy": "intimità"
 	},
 	"fr": {
 		"openVM": "Répertoire OpenVM",
@@ -71,6 +70,6 @@
 		"type": "Type",
 		"showDetails": "Détails de l'émission",
 		"impressum": "mentions légales",
-		"privacy": "Politique de confidentialité" 
+		"privacy": "Politique de confidentialité"
 	}
 }

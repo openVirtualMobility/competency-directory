@@ -9,31 +9,117 @@ import api from "../api"
 import LocalizedStrings from 'react-localization';
 import backButton from "../assets/arrow-left.svg";
 import editButton from "../assets/edit.svg";
+import Select from "react-select";
+
 var language = require("../languages/languages.json");
 let strings = new LocalizedStrings(language)
+
+const options = [
+    { value: 'en', label: 'English' },
+    { value: 'de', label: 'German' },
+    { value: 'nl', label: 'Dutch' },
+    { value: 'es', label: 'Spanish' },
+    { value: 'it', label: 'Italian' },
+    { value: 'fr', label: 'France' },
+];
+
+const typeOptions = [
+    { value: 'Knowledge', label: 'Knowledge' },
+    { value: 'Skill or Competence', label: 'Skill or Competence' },
+];
+
+const reuseOptions = [
+    { value: '1 Transversal', label: '1 Transversal' },
+    {
+        value: '2 Cross-sectoral', label: '2 Cross-sectoral'
+    },
+    { value: '3 Sector-specific', label: '3 Sector-specific' },
+    {
+        value: '4 Occupation-specific', label: '4 Occupation-specific'
+    },
+]
 
 class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
+            entry: null
         };
     }
 
     async componentDidMount() {
-        console.log(this.props.match.params.id)
         var lang = localStorage.getItem("language")
         if (!lang) lang = Object.getOwnPropertyNames(language).pop() || "en";  // in case of unset language use first or EN
         let response = await api.getEntryWithId(this.props.match.params.id, lang);
         strings.setLanguage(lang)
         response.json().then(data => {
-            console.log(data)
-            // do something with your data
+            var defaultLanguage = this.setDropdownDefault(options, data.language)
+            var defaultType = this.setDropdownDefault(typeOptions, data.skillType)
+            var defaultSkill = this.setDropdownDefault(reuseOptions, data.skillReuseLevel)
+
             this.setState({
                 entry: data,
+                selectedLanguageOption: defaultLanguage,
+                selectedReuseOption: defaultSkill,
+                selectedTypeOption: defaultType,
                 loading: false
             })
         });
+    }
+
+    setDropdownDefault(options, entryValue) {
+        // checks what the default value for the dropdown selections should be
+        for (const item of options) {
+            if (item.value === entryValue) {
+                return item
+            }
+        }
+    }
+
+    save() {
+        // builds the new entry and sends a request to api to update the matching one
+        // we use this method to unify all fields and build a new entry object due to a limitation
+        // in react we cannot udate the nested values in the original Object
+        var entry = this.state.entry
+        entry.language = this.state.selectedLanguageOption.value
+        entry.skillType = this.state.selectedTypeOption.value
+        entry.skillReuseLevel = this.state.selectedReuseOption.value
+        console.log(entry)
+    }
+
+    handleChange = async selectedOption => {
+        this.setState({
+            selectedLanguageOption: selectedOption
+        })
+    };
+
+    handleTypChange = async selectedOption => {
+        this.setState({
+            selectedTypeOption: selectedOption
+        })
+    };
+
+    handleReuseChange = async selectedOption => {
+        this.setState({
+            selectedReuseOption: selectedOption
+        })
+    };
+
+    handleTitleChange(title) {
+        let newEntry = this.state.entry
+        newEntry.prefLabel.value = title
+        this.setState({
+            entry: newEntry
+        })
+    }
+
+    handleDescriptionChange(desc) {
+        let newEntry = this.state.entry
+        newEntry.description.value = desc
+        this.setState({
+            entry: newEntry
+        })
     }
 
     loadingAnimation = () => {
@@ -53,6 +139,8 @@ class Edit extends Component {
         )
     }
 
+
+
     entryPage = () => {
         return (
             <div>
@@ -67,11 +155,10 @@ class Edit extends Component {
                         </Link>
                     </div>
                     <div style={{ margin: 10, alignSelf: "flex-end" }}>
-                        <Button variant="outlined" style={{ alignSelf: "flex-end" }}
-                            onClick={() => { console.log("SAVE TO API") }}
-
+                        <Button variant="contained" color="primary" style={{ alignSelf: "flex-end" }}
+                            onClick={() => this.save()}
                         >
-                            <img src={editButton} alt="Logo" />
+                            <img src={editButton} alt="Logo" style={{ color: "red" }} />
                             <p style={{ marginLeft: 5 }}>save</p>
                         </Button>
                     </div>
@@ -99,19 +186,16 @@ class Edit extends Component {
                                 boxSizing: "border-box"
                             }}
                         >
+                            <div style={{ minWidth: "100%", justifyContent: "flex-end" }}>
+                                <Select
+                                    value={this.state.selectedTypeOption}
+                                    defaultValue={this.state.selectedTypeOption}
+                                    onChange={this.handleTypChange}
+                                    options={typeOptions}
+                                    placeholder="Select Type"
+                                />
+                            </div>
 
-                            <Typography color="textSecondary" gutterBottom>
-                                {strings.type}: {this.state.entry.skillType}
-                            </Typography>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                                label="Type"
-                                value={this.state.entry.skillType}
-                                name="Type"
-                            // onChange={(e) => state.username = e.target.value}
-                            />
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -119,8 +203,26 @@ class Edit extends Component {
                                 label="Title"
                                 value={this.state.entry.prefLabel.value}
                                 name="Title"
-                            // onChange={(e) => state.username = e.target.value}
+                                onChange={(e) => this.handleTitleChange(e.target.value)}
                             />
+                            <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                                <Select
+                                    value={this.state.selectedLanguageOption}
+                                    defaultValue={this.state.selectedLanguageOption}
+                                    onChange={this.handleChange}
+                                    options={options}
+                                    placeholder="Select Language"
+                                />
+                            </div>
+                            <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                                <Select
+                                    value={this.state.selectedReuseOption}
+                                    defaultValue={this.state.selectedReuseOption}
+                                    onChange={this.handleReuseChange}
+                                    options={reuseOptions}
+                                    placeholder="Reuse"
+                                />
+                            </div>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -130,17 +232,8 @@ class Edit extends Component {
                                 name="Description"
                                 rows="9"
                                 multiline
-                            // onChange={(e) => state.username = e.target.value}
+                                onChange={(e) => this.handleDescriptionChange(e.target.value)}
                             />
-
-                            <Typography
-                                variant="h6"
-                                component="h2"
-                                style={{ lineHeight: 1.2 }}
-                                gutterBottom
-                            >
-                                {this.state.entry.prefLabel.value}
-                            </Typography>
                         </CardContent>
                     </Card>
                 </div>

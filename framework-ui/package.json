@@ -9,6 +9,7 @@
     "downshift": "3.3.5",
     "react": "16.10.2",
     "react-dom": "16.10.2",
+    "react-icons": "^3.8.0",
     "react-list": "0.8.13",
     "react-localization": "^1.0.15",
     "react-router-dom": "5.1.2",
