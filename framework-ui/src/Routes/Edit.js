@@ -39,6 +39,10 @@ const reuseOptions = [
     },
 ]
 
+let essentialPartOfOptions = []
+let optionalPartOfOptions = []
+let similiarToOptions = []
+let needsAsPrerequisiteOptions = []
 
 class Edit extends Component {
     constructor(props) {
@@ -71,22 +75,26 @@ class Edit extends Component {
             var defaultLanguage = this.setDropdownDefault(options, data.language)
             var defaultType = this.setDropdownDefault(typeOptions, data.skillType)
             var defaultSkill = this.setDropdownDefault(reuseOptions, data.skillReuseLevel)
+            var defaultEssentialPart = [];
+            console.log(data)
+            var defaultNeedsAsPrequisite = [];
 
             this.setState({
                 entry: data,
                 selectedLanguageOption: defaultLanguage,
                 selectedReuseOption: defaultSkill,
                 selectedTypeOption: defaultType,
+                selectedEssentialPartOf: defaultEssentialPart,
+                selectedNeedsAsRequisite: defaultNeedsAsPrequisite,
                 loading: false
             })
         });
     }
 
     buildRelationsDropdown(entries) {
-        console.log(entries)
         let newEntryOptions = []
         entries.forEach(entry => {
-            console.log(entry)
+
             let newOption = { value: entry, label: entry.prefLabel.value }
             newEntryOptions.push(newOption)
         });
@@ -135,6 +143,18 @@ class Edit extends Component {
         })
     };
 
+    handleEssentialPartOfChange = async selectedOption => {
+        this.setState({
+            selectedEssentialPartOf: selectedOption
+        })
+    };
+
+    handleNeedsAsRequisiteChange = async selectedOption => {
+        this.setState({
+            selectedNeedsAsRequisite: selectedOption
+        })
+    };
+
     handleTitleChange(title) {
         let newEntry = this.state.entry
         newEntry.prefLabel.value = title
@@ -169,12 +189,11 @@ class Edit extends Component {
     }
 
 
-
     entryPage = () => {
         return (
             <div>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                    <div style={{ margin: 10 }}>
+                    <div style={{ margin: 10, }}>
 
                         <Link href="/Dashboard" variant="body2">
                             <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
@@ -198,13 +217,11 @@ class Edit extends Component {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: "100vh",
                     margin: 20,
                     outline: "none"
                 }}>
-                    <Card
-                        onClick={e => e.stopPropagation()}
-                        style={{ flex: 1, padding: "18px 12px", maxWidth: 800, }}
+                    <div
+                        style={{ flex: 1, padding: "18px 12px", maxWidth: 800, height: "100vh" }}
                     >
                         <CardContent
                             style={{
@@ -215,7 +232,7 @@ class Edit extends Component {
                                 boxSizing: "border-box"
                             }}
                         >
-                            <div style={{ minWidth: "100%", justifyContent: "flex-end" }}>
+                            <div style={{ minWidth: "100%", justifyContent: "flex-end", zIndex: 2 }}>
                                 <Select
                                     value={this.state.selectedTypeOption}
                                     defaultValue={this.state.selectedTypeOption}
@@ -234,7 +251,7 @@ class Edit extends Component {
                                 name="Title"
                                 onChange={(e) => this.handleTitleChange(e.target.value)}
                             />
-                            <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                            <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5, zIndex: 2 }}>
                                 <Select
                                     value={this.state.selectedLanguageOption}
                                     defaultValue={this.state.selectedLanguageOption}
@@ -243,7 +260,7 @@ class Edit extends Component {
                                     placeholder="Select Language"
                                 />
                             </div>
-                            <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
+                            <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5, zIndex: 2 }}>
                                 <Select
                                     value={this.state.selectedReuseOption}
                                     defaultValue={this.state.selectedReuseOption}
@@ -269,12 +286,12 @@ class Edit extends Component {
                                 </Typography>
                                 <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
                                     <Select
-                                        value={this.state.selectedReuseOption}
+                                        value={this.state.selectedEssentialPartOf}
                                         defaultValue={this.state.selectedReuseOption}
-                                        onChange={this.handleReuseChange}
+                                        onChange={this.handleEssentialPartOfChange}
                                         isMulti
                                         options={this.state.entryOptions}
-                                        placeholder="Reuse"
+                                        placeholder="select one or more"
                                     />
                                 </div>
                             </div>
@@ -301,7 +318,7 @@ class Edit extends Component {
                                         value={this.state.selectedReuseOption}
                                         defaultValue={this.state.selectedReuseOption}
                                         onChange={this.handleReuseChange}
-                                        options={reuseOptions}
+                                        options={this.state.entryOptions}
                                         placeholder="Reuse"
                                     />
                                 </div>
@@ -312,17 +329,18 @@ class Edit extends Component {
                                 </Typography>
                                 <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
                                     <Select
-                                        value={this.state.selectedReuseOption}
-                                        defaultValue={this.state.selectedReuseOption}
-                                        onChange={this.handleReuseChange}
-                                        options={reuseOptions}
-                                        placeholder="Reuse"
+                                        value={this.state.selectedNeedsAsRequisite}
+                                        defaultValue={this.state.selectedNeedsAsRequisite}
+                                        onChange={this.handleNeedsAsRequisiteChange}
+                                        options={this.state.entryOptions}
+                                        isMulti
+                                        placeholder="select one or more"
                                     />
                                 </div>
                             </div>
 
                         </CardContent>
-                    </Card>
+                    </div>
                 </div>
             </div >
 

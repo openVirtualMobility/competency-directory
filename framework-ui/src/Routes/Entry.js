@@ -4,6 +4,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import Chip from "@material-ui/core/Chip";
+import Footer from "../Footer"
 import Button from "@material-ui/core/Button";
 import api from "../api"
 import LocalizedStrings from 'react-localization';
@@ -138,6 +139,7 @@ class Entry extends Component {
             </CardContent>
           </Card>
         </div>
+        <Footer strings={strings} />
       </div>
 
     );
