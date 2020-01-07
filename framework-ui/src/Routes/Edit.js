@@ -66,8 +66,7 @@ class Edit extends Component {
             entry => entry.prefLabel.value
         );
 
-        // builds the objects that are used in the dropdown selection for the relations
-        this.buildRelationsDropdown(entries)
+
 
         let response = await api.getEntryWithId(this.props.match.params.id, lang);
         strings.setLanguage(lang)
@@ -76,8 +75,12 @@ class Edit extends Component {
             var defaultType = this.setDropdownDefault(typeOptions, data.skillType)
             var defaultSkill = this.setDropdownDefault(reuseOptions, data.skillReuseLevel)
             var defaultEssentialPart = [];
-            console.log(data)
+            var defaultOptionalPartOf = [];
+            var defaultSimiliarTo = [];
             var defaultNeedsAsPrequisite = [];
+
+            // builds the objects that are used in the dropdown selection for the relations
+            this.buildRelationsDropdown(entries, data.prefLabel.value)
 
             this.setState({
                 entry: data,
@@ -85,18 +88,24 @@ class Edit extends Component {
                 selectedReuseOption: defaultSkill,
                 selectedTypeOption: defaultType,
                 selectedEssentialPartOf: defaultEssentialPart,
+                selectedOptionalPartOf: defaultOptionalPartOf,
+                selectedSimiliarTo: defaultSimiliarTo,
                 selectedNeedsAsRequisite: defaultNeedsAsPrequisite,
                 loading: false
             })
         });
+
+
     }
 
-    buildRelationsDropdown(entries) {
+    async buildRelationsDropdown(entries, thisPrefLabel) {
         let newEntryOptions = []
         entries.forEach(entry => {
-
-            let newOption = { value: entry, label: entry.prefLabel.value }
-            newEntryOptions.push(newOption)
+            // does not allow to add own title to dropdown list for references dropdowns to select
+            if (entry.prefLabel.value != thisPrefLabel) {
+                let newOption = { value: entry, label: entry.prefLabel.value }
+                newEntryOptions.push(newOption)
+            }
         });
 
         this.setState({
@@ -144,15 +153,11 @@ class Edit extends Component {
     };
 
     handleEssentialPartOfChange = async selectedOption => {
-        this.setState({
-            selectedEssentialPartOf: selectedOption
-        })
+
     };
 
     handleNeedsAsRequisiteChange = async selectedOption => {
-        this.setState({
-            selectedNeedsAsRequisite: selectedOption
-        })
+
     };
 
     handleTitleChange(title) {
@@ -163,13 +168,7 @@ class Edit extends Component {
         })
     }
 
-    handleDescriptionChange(desc) {
-        let newEntry = this.state.entry
-        newEntry.description.value = desc
-        this.setState({
-            entry: newEntry
-        })
-    }
+
 
     loadingAnimation = () => {
         return (
@@ -264,7 +263,11 @@ class Edit extends Component {
                                 <Select
                                     value={this.state.selectedReuseOption}
                                     defaultValue={this.state.selectedReuseOption}
-                                    onChange={this.handleReuseChange}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            selectedReuseOption: e
+                                        })
+                                    }}
                                     options={reuseOptions}
                                     placeholder="Reuse"
                                 />
@@ -278,7 +281,6 @@ class Edit extends Component {
                                 name="Description"
                                 rows="9"
                                 multiline
-                                onChange={(e) => this.handleDescriptionChange(e.target.value)}
                             />
                             <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" }}>
                                 <Typography variant="subtitle1" style={{ paddingRight: 10 }}>
@@ -288,7 +290,11 @@ class Edit extends Component {
                                     <Select
                                         value={this.state.selectedEssentialPartOf}
                                         defaultValue={this.state.selectedReuseOption}
-                                        onChange={this.handleEssentialPartOfChange}
+                                        onChange={e => {
+                                            this.setState({
+                                                selectedEssentialPartOf: e
+                                            })
+                                        }}
                                         isMulti
                                         options={this.state.entryOptions}
                                         placeholder="select one or more"
@@ -301,11 +307,15 @@ class Edit extends Component {
                                 </Typography>
                                 <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
                                     <Select
-                                        value={this.state.selectedReuseOption}
-                                        defaultValue={this.state.selectedReuseOption}
-                                        onChange={this.handleReuseChange}
-                                        options={reuseOptions}
-                                        placeholder="Reuse"
+                                        value={this.state.selectedOptionalPartOf}
+                                        defaultValue={this.state.selectedOptionalPartOf}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                selectedOptionalPartOf: e
+                                            })
+                                        }}
+                                        options={optionalPartOfOptions}
+                                        placeholder="select one or more"
                                     />
                                 </div>
                             </div>
@@ -315,11 +325,16 @@ class Edit extends Component {
                                 </Typography>
                                 <div style={{ width: "60%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5 }}>
                                     <Select
-                                        value={this.state.selectedReuseOption}
-                                        defaultValue={this.state.selectedReuseOption}
-                                        onChange={this.handleReuseChange}
+                                        value={this.state.similiarToOptions}
+                                        defaultValue={this.state.selectedSimiliarTo}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                selectedSimiliarTo: e
+                                            })
+                                        }}
+                                        isMulti
                                         options={this.state.entryOptions}
-                                        placeholder="Reuse"
+                                        placeholder="select one or more"
                                     />
                                 </div>
                             </div>
@@ -331,7 +346,11 @@ class Edit extends Component {
                                     <Select
                                         value={this.state.selectedNeedsAsRequisite}
                                         defaultValue={this.state.selectedNeedsAsRequisite}
-                                        onChange={this.handleNeedsAsRequisiteChange}
+                                        onChange={e =>
+                                            this.setState({
+                                                selectedNeedsAsRequisite: e
+                                            })
+                                        }
                                         options={this.state.entryOptions}
                                         isMulti
                                         placeholder="select one or more"

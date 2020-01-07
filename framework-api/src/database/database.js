@@ -138,7 +138,7 @@ export const getEntries = async (requestedId, language) => {
     }
     result = await session.writeTransaction(tx =>
       tx.run(
-        `MATCH (currentNode) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN currentNode, collect(relation), collect(targetNode)`
+        `MATCH (currentNode) ${dbClause} OPTIONAL MATCH (currentNode)-[relation]->(targetNode) ${dbClause} RETURN currentNode, collect(relation), collect(targetNode)`
       )
     )
   }
