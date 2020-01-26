@@ -94,8 +94,6 @@ class Edit extends Component {
                 loading: false
             })
         });
-
-
     }
 
     async buildRelationsDropdown(entries, thisPrefLabel) {
@@ -131,44 +129,7 @@ class Edit extends Component {
         entry.language = this.state.selectedLanguageOption.value
         entry.skillType = this.state.selectedTypeOption.value
         entry.skillReuseLevel = this.state.selectedReuseOption.value
-        console.log(this.state.entryOptions)
     }
-
-    handleChange = async selectedOption => {
-        this.setState({
-            selectedLanguageOption: selectedOption
-        })
-    };
-
-    handleTypChange = async selectedOption => {
-        this.setState({
-            selectedTypeOption: selectedOption
-        })
-    };
-
-    handleReuseChange = async selectedOption => {
-        this.setState({
-            selectedReuseOption: selectedOption
-        })
-    };
-
-    handleEssentialPartOfChange = async selectedOption => {
-
-    };
-
-    handleNeedsAsRequisiteChange = async selectedOption => {
-
-    };
-
-    handleTitleChange(title) {
-        let newEntry = this.state.entry
-        newEntry.prefLabel.value = title
-        this.setState({
-            entry: newEntry
-        })
-    }
-
-
 
     loadingAnimation = () => {
         return (
@@ -186,7 +147,6 @@ class Edit extends Component {
             </div>
         )
     }
-
 
     entryPage = () => {
         return (
@@ -235,7 +195,11 @@ class Edit extends Component {
                                 <Select
                                     value={this.state.selectedTypeOption}
                                     defaultValue={this.state.selectedTypeOption}
-                                    onChange={this.handleTypChange}
+                                    onChange={e => {
+                                        this.setState({
+                                            selectedTypeOption: e
+                                        })
+                                    }}
                                     options={typeOptions}
                                     placeholder="Select Type"
                                 />
@@ -248,13 +212,23 @@ class Edit extends Component {
                                 label="Title"
                                 value={this.state.entry.prefLabel.value}
                                 name="Title"
-                                onChange={(e) => this.handleTitleChange(e.target.value)}
+                                onChange={(e) => {
+                                    let newEntry = this.state.entry
+                                    newEntry.prefLabel.value = e.target.value
+                                    this.setState({
+                                        entry: newEntry
+                                    })
+                                }}
                             />
                             <div style={{ minWidth: "100%", justifyContent: "flex-end", paddingTop: 5, paddingBottom: 5, zIndex: 2 }}>
                                 <Select
                                     value={this.state.selectedLanguageOption}
                                     defaultValue={this.state.selectedLanguageOption}
-                                    onChange={this.handleChange}
+                                    onChange={e => {
+                                        this.setState({
+                                            selectedLanguageOption: e
+                                        })
+                                    }}
                                     options={options}
                                     placeholder="Select Language"
                                 />

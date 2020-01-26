@@ -18,7 +18,7 @@ const options = [
   { value: 'nl', label: 'Dutch' },
   { value: 'es', label: 'Spanish' },
   { value: 'it', label: 'Italian' },
-  { value: 'fr', label: 'France' },
+  { value: 'fr', label: 'French' },
 ];
 
 let strings = new LocalizedStrings(language);

@@ -74,6 +74,8 @@ export const getReferences = async () => {
 }
 
 export const updateEntry = async (id, lang, newEntry) => {
+
+
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
@@ -88,12 +90,15 @@ export const updateEntry = async (id, lang, newEntry) => {
     language,
     altLabel } = newEntry
 
-  return session.run(
-    'MATCH (entry:Entry {id: {id}}) set entry.skillReuseLevel = {skillReuseLevel}, entry.skillType = {skillType}, entry.prefLabel = {prefLabel}, entry.language = {language}, entry.altLabel = altLabel, entry.description = description RETURN entry',
+  console.log(id)
+  return await session.run(
+    'MATCH (entry:Entry {id: {id}}) set entry.skillReuseLevel = {skillReuseLevel}, entry.skillType = {skillType}, entry.prefLabel = {prefLabel}, entry.altLabel = {altLabel}, entry.description = {description} RETURN entry',
     {
+      id: id,
       skillReuseLevel: skillReuseLevel,
       skillType: skillType,
       prefLabel: prefLabel,
+      altLabel: altLabel,
       language: language,
       description: description
     }
