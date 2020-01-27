@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 class Api {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -8,9 +8,9 @@ class Api {
     fetch(`${this.baseUrl}${path}`, {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        'Accept': 'application/json; charset=utf-8',
+        Accept: "application/json; charset=utf-8"
       },
-      ...rest,
+      ...rest
     });
 
   fetchPost = (path, ...rest) =>
@@ -20,24 +20,22 @@ class Api {
       headers: {
         "Content-Type": "application/json;"
       },
-      ...rest,
+      ...rest
     });
 
-  getEntries = (lang) =>
-    this.fetch('/entries?language=' + lang, {
+  getEntries = lang =>
+    this.fetch("/entries?language=" + lang, {
       method: "GET",
       headers: {
-        'Accept': 'application/json; charset=utf-8',
-        'Content-Type': 'application/json; charset=utf-8'
-      },
+        Accept: "application/json; charset=utf-8",
+        "Content-Type": "application/json; charset=utf-8"
+      }
     });
-
 
   getEntryWithId = (id, lang) =>
     this.fetch(`/entries/${id}?language=${lang}`, {
       method: "GET"
     });
-
 
   getReferenceTypes = () =>
     this.fetch("/referenceTypes", {
@@ -45,30 +43,32 @@ class Api {
     });
 
   postLogin = (username, password) =>
-    axios.post(`${this.baseUrl}/auth/login`, {
-      username: username,
-      password: password
-    })
-      .then(function (response) {
-        console.log("RESPONSE")
-        console.log(response)
+    axios
+      .post(`${this.baseUrl}/auth/login`, {
+        username: username,
+        password: password
+      })
+      .then(function(response) {
+        console.log("RESPONSE");
+        console.log(response);
         return response;
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
 
   postRegister = (username, password) =>
-    axios.post(`${this.baseUrl}/auth/register`, {
-      username: username,
-      password: password
-    })
-      .then(function (response) {
-        return response
+    axios
+      .post(`${this.baseUrl}/auth/register`, {
+        username: username,
+        password: password
       })
-      .catch(function (error) {
+      .then(function(response) {
+        return response;
+      })
+      .catch(function(error) {
         console.log(error);
       });
 }
 
-export default new Api("http://localhost:6060"); 
+export default new Api("");
