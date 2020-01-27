@@ -37,6 +37,23 @@ class Api {
       method: "GET"
     });
 
+  deleteWithId = id =>
+    axios
+      .delete(`${this.baseUrl}/entries/${id}`)
+      .then(function(response) {
+        console.log("RESPONSE");
+        console.log(response);
+        return response;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  // this.fetch(`/entries/${id}`, {
+  //   method: "DELETE",
+  //   headers: {
+  //     Accept: "application/json; charset=utf-8"
+  //   }
+
   getReferenceTypes = () =>
     this.fetch("/referenceTypes", {
       method: "GET"

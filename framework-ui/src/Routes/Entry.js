@@ -76,7 +76,7 @@ class Entry extends Component {
             </Link>
           </div>
           <div style={{ margin: 10, alignSelf: "flex-end" }}>
-            <Link href="/entries/23/edit">
+            <Link href={"/entries/" + this.props.match.params.id + "/edit"}>
               <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
                 <img src={editButton} alt="Logo" />
                 <p style={{ marginLeft: 5 }}>edit</p>

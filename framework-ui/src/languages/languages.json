@@ -18,7 +18,9 @@
     "isOptionalPartOf": "is Optional Part of",
     "isSimiliarTo": "is similiar to",
     "needsAsPrerequisite": "needs as prerequisite",
-    "selectOneOrMore": "select one or more"
+    "selectOneOrMore": "select one or more",
+    "createCompetency": "create competency",
+    "deleteCompetency": "delete competency"
   },
   "de": {
     "openVM": "OpenVM Verzeichnis",
@@ -39,7 +41,9 @@
     "isOptionalPartOf": "ist optionaler teil von",
     "isSimiliarTo": "ist ähnlich zu",
     "needsAsPrerequisite": "braucht als vorraussetzung",
-    "selectOneOrMore": "wähle eins oder mehrere"
+    "selectOneOrMore": "wähle eins oder mehrere",
+    "createCompetency": "erstelle Kompetenz",
+    "deleteCompetency": "lösche Kompetenz"
   },
   "nl": {
     "openVM": "OpenVM Directory",
@@ -60,7 +64,9 @@
     "isOptionalPartOf": "is Optional Part of",
     "isSimiliarTo": "is similiar to",
     "needsAsPrerequisite": "needs as prerequisite",
-    "selectOneOrMore": "select one or more"
+    "selectOneOrMore": "select one or more",
+    "createCompetency": "create competency",
+    "deleteCompetency": "delete competency"
   },
   "es": {
     "openVM": "OpenVM Directorio",
@@ -81,7 +87,9 @@
     "isOptionalPartOf": "is Optional Part of",
     "isSimiliarTo": "is similiar to",
     "needsAsPrerequisite": "needs as prerequisite",
-    "selectOneOrMore": "select one or more"
+    "selectOneOrMore": "select one or more",
+     "createCompetency": "create competency",
+    "deleteCompetency": "delete competency"
   },
   "it": {
     "openVM": "OpenVM Elenco",
@@ -102,7 +110,9 @@
     "isOptionalPartOf": "is Optional Part of",
     "isSimiliarTo": "is similiar to",
     "needsAsPrerequisite": "needs as prerequisite",
-    "selectOneOrMore": "select one or more"
+    "selectOneOrMore": "select one or more",
+    "createCompetency": "create competency",
+    "deleteCompetency": "delete competency"
   },
   "fr": {
     "openVM": "Répertoire OpenVM",
@@ -123,7 +133,9 @@
     "isOptionalPartOf": "is Optional Part of",
     "isSimiliarTo": "is similiar to",
     "needsAsPrerequisite": "needs as prerequisite",
-    "selectOneOrMore": "select one or more"
+    "selectOneOrMore": "select one or more",
+    "createCompetency": "create competency",
+    "deleteCompetency": "delete competency"
   },
   "rum": {
     "openVM": "OpenVM Directory",
@@ -144,6 +156,8 @@
     "isOptionalPartOf": "is Optional Part of",
     "isSimiliarTo": "is similiar to",
     "needsAsPrerequisite": "needs as prerequisite",
-    "selectOneOrMore": "select one or more"
+    "selectOneOrMore": "select one or more",
+    "createCompetency": "create competency",
+    "deleteCompetency": "delete competency"
   }
 }

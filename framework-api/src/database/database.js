@@ -62,7 +62,7 @@ export const getReferences = async () => {
     sourceID: `${config.baseurl}/entries/${entry.get('sourceNode.id')}`,
     referenceType: `${config.baseurl}/referenceTypes/${
       entry.get('reference').type
-      }`,
+    }`,
     targetID: `${config.baseurl}/entries/${entry.get('targetNode.id')}`,
   }))
   session.close()
@@ -73,9 +73,24 @@ export const getReferences = async () => {
   })
 }
 
+export const deleteEntry = async id => {
+  const driver = neo4j.driver(
+    'bolt://db:7687',
+    neo4j.auth.basic('neo4j', 'qwerqwer')
+  )
+  const session = driver.session()
+
+  let result = await session.run(
+    'MATCH (entry: entry {id: $id}) detach delete entry',
+    {
+      id: id,
+    }
+  )
+
+  return result
+}
+
 export const updateEntry = async (id, lang, newEntry) => {
-
-
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
@@ -88,21 +103,34 @@ export const updateEntry = async (id, lang, newEntry) => {
     skillType,
     prefLabel,
     language,
-    altLabel } = newEntry
+    altLabel,
+  } = newEntry
+  id = id.toString()
 
-  console.log(id)
-  return await session.run(
-    'MATCH (entry:Entry {id: {id}}) set entry.skillReuseLevel = {skillReuseLevel}, entry.skillType = {skillType}, entry.prefLabel = {prefLabel}, entry.altLabel = {altLabel}, entry.description = {description} RETURN entry',
+  // let data = await session.run(
+  //   'MATCH (entry:Entry {id: $id}) set entry.skillReuseLevel=$skillReuseLevel, entry.skillType=$skillType, entry.prefLabel=$prefLabel, entry.altLabel=$altLabel, entry.description=$description RETURN entry',
+  //   {
+  //     id: id,
+  //     skillReuseLevel: skillReuseLevel,
+  //     skillType: skillType,
+  //     prefLabel: prefLabel,
+  //     altLabel: altLabel,
+  //     language: language,
+  //     description: description,
+  //   }
+  // )
+
+  let result = await session.run(
+    'MATCH (entry: entry {id: $id}) return entry',
     {
       id: id,
-      skillReuseLevel: skillReuseLevel,
-      skillType: skillType,
-      prefLabel: prefLabel,
-      altLabel: altLabel,
-      language: language,
-      description: description
     }
   )
+  console.log('data')
+  console.log(data)
+  session.close()
+  driver.close()
+  return data
 }
 
 export const getEntries = async (requestedId, language) => {
@@ -182,7 +210,6 @@ export const getEntries = async (requestedId, language) => {
 }
 
 export const createUser = async (username, password) => {
-
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')

@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
@@ -9,6 +14,7 @@ import { sortAlphabetically } from "../utils";
 import LocalizedStrings from "react-localization";
 import backButton from "../assets/arrow-left.svg";
 import saveButton from "../assets/save.svg";
+import deleteButton from "../assets/x-octagon.svg";
 import Select from "react-select";
 import Footer from "../Footer";
 var language = require("../languages/languages.json");
@@ -52,6 +58,7 @@ class Edit extends Component {
     this.state = {
       loading: true,
       entry: null,
+      setOpen: false,
       entryOptions: []
     };
   }
@@ -122,15 +129,33 @@ class Edit extends Component {
     }
   }
 
+  handleClickOpen = () => {
+    this.setState({
+      setOpen: true
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      setOpen: false
+    });
+  };
+
   save() {
     // builds the new entry and sends a request to api to update the matching one
     // we use this method to unify all fields and build a new entry object due to a limitation
-    // in react we cannot udate the nested values in the original Object
+    // in react we cannot udate nested objects in the root Object
     var entry = this.state.entry;
     entry.language = this.state.selectedLanguageOption.value;
     entry.skillType = this.state.selectedTypeOption.value;
     entry.skillReuseLevel = this.state.selectedReuseOption.value;
   }
+
+  delete = () => {
+    this.handleClose();
+    console.log(this.state.entry.id);
+    api.deleteWithId(this.props.match.params.id);
+  };
 
   loadingAnimation = () => {
     return (
@@ -154,6 +179,24 @@ class Edit extends Component {
   entryPage = () => {
     return (
       <div>
+        <Dialog
+          open={this.state.setOpen}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {strings.deleteCompetency + "?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={this.delete} color="primary" autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div
           style={{
             display: "flex",
@@ -172,8 +215,18 @@ class Edit extends Component {
           <div style={{ margin: 10, alignSelf: "flex-end" }}>
             <Button
               variant="contained"
+              color="secondary"
+              style={{ alignSelf: "flex-end", marginLeft: 10, marginRight: 10 }}
+              onClick={() => this.handleClickOpen()}
+            >
+              <img src={deleteButton} alt="Logo" style={{ color: "red" }} />
+              <p style={{ marginLeft: 5 }}>delete</p>
+            </Button>
+
+            <Button
+              variant="contained"
               color="primary"
-              style={{ alignSelf: "flex-end" }}
+              style={{ alignSelf: "flex-end", marginLeft: 10, marginRight: 10 }}
               onClick={() => this.save()}
             >
               <img src={saveButton} alt="Logo" style={{ color: "red" }} />
@@ -181,7 +234,6 @@ class Edit extends Component {
             </Button>
           </div>
         </div>
-
         <div
           style={{
             display: "flex",
