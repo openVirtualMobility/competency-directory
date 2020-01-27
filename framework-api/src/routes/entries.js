@@ -25,7 +25,8 @@ entries
   .patch('/:id', async (ctx, next) => {
     const { data } = await database.updateEntry(
       ctx.params.id,
-      ctx.query.language
+      ctx.query.language,
+      ctx.request.body
     )
     ctx.data = data
     await next()

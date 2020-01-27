@@ -15,6 +15,7 @@ import { references as referenceData } from './database/references'
 import koaBody from 'koa-body'
 import koaSend from 'koa-send'
 
+
 const app = new Koa()
 const router = new Router()
 
@@ -32,7 +33,7 @@ app.use(async (ctx, next) => {
 })
 
 // detect GET of any deep-link by browsers (text/html clients) and send them the index.html instead
-app.use( async (ctx, next) => {
+app.use(async (ctx, next) => {
   if (ctx.request.method != 'GET') {
     await next();
     return;
@@ -49,7 +50,7 @@ app.use( async (ctx, next) => {
       break;
     default:
       await next();
-      // ctx.throw(406, 'client must accept html or json');
+    // ctx.throw(406, 'client must accept html or json');
   }
 });
 
@@ -111,9 +112,9 @@ router.get('/populate', async (ctx, next) => {
   await ctx.session.writeTransaction(tx =>
     tx.run(
       `
-      UNWIND $props AS Entry
-      CREATE (node:Entry)
-      SET node = Entry
+      UNWIND $props AS entry
+      CREATE (node:entry)
+      SET node = entry
       `,
       { props }
     )

@@ -14,8 +14,8 @@ referenceTypes
   .use(async (ctx, next) => {
     const entries = ctx.data.map(date =>
       Object.assign({}, date, {
-        '@context': config.baseurl+'/context',
-        id: config.baseurl+'/referenceTypes/${date.id}',
+        '@context': config.baseurl + '/context',
+        id: config.baseurl + '/referenceTypes/${date.id}',
         key: date.id,
       })
     )
@@ -27,7 +27,7 @@ referenceTypes
       ctx.body = await jsonld.expand(ctx.entries)
     } else {
       ctx.body = await jsonld.compact(ctx.entries, {
-        '@context': config.baseurl+'/context/',
+        '@context': config.baseurl + '/context/',
       })
     }
     await next()

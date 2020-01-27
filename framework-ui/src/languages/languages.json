@@ -9,9 +9,12 @@
 		"type": "Type",
 		"showDetails": "show details",
 		"impressum": "Impressum",
-		"privacy": "Privacy Policy"
+		"privacy": "Privacy Policy",
+		"title": "Title",
+		"goBack": "Go Back",
+		"edit": "Edit",
+		"save": "Save"
 	},
-
 	"de": {
 		"openVM": "OpenVM Verzeichnis",
 		"searchEntries": "Durchsuche Kompetenzen",
@@ -22,7 +25,11 @@
 		"type": "Typ",
 		"showDetails": "zeige Details",
 		"impressum": "Impressum",
-		"privacy": "Datenschutz"
+		"privacy": "Datenschutz",
+		"title": "Titel",
+		"goBack": "zurück",
+		"edit": "bearbeiten",
+		"save": "speichern"
 	},
 	"nl": {
 		"openVM": "OpenVM Directory",
@@ -34,7 +41,11 @@
 		"type": "Type",
 		"showDetails": "toon details",
 		"impressum": "indruk",
-		"privacy": "gegevensbescherming"
+		"privacy": "gegevensbescherming",
+		"title": "title",
+		"goBack": "Go Back",
+		"edit": "Edit",
+		"save": "Save"
 	},
 	"es": {
 		"openVM": "OpenVM Directorio",
@@ -46,9 +57,12 @@
 		"type": "escribir a máquina",
 		"showDetails": "mostrar detalles",
 		"impressum": "impresión",
-		"privacy": "protección de datos"
+		"title": "title",
+		"privacy": "protección de datos",
+		"goBack": "Go Back",
+		"edit": "Edit",
+		"save": "Save"
 	},
-
 	"it": {
 		"openVM": "OpenVM Elenco",
 		"searchEntries": "voci di ricerca",
@@ -59,7 +73,11 @@
 		"type": "modello",
 		"showDetails": "mostra dettagli",
 		"impressum": "impressionum",
-		"privacy": "intimità" 
+		"privacy": "intimità",
+		"title": "title",
+		"goBack": "Go Back",
+		"edit": "Edit",
+		"save": "Save"
 	},
 	"fr": {
 		"openVM": "Répertoire OpenVM",
@@ -71,6 +89,10 @@
 		"type": "Type",
 		"showDetails": "Détails de l'émission",
 		"impressum": "mentions légales",
-		"privacy": "Politique de confidentialité" 
+		"privacy": "Politique de confidentialité",
+		"title": "title",
+		"goBack": "Go Back",
+		"edit": "Edit",
+		"save": "Save"
 	}
 }

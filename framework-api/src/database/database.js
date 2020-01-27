@@ -74,6 +74,8 @@ export const getReferences = async () => {
 }
 
 export const updateEntry = async (id, lang, newEntry) => {
+
+
   const driver = neo4j.driver(
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
@@ -88,12 +90,15 @@ export const updateEntry = async (id, lang, newEntry) => {
     language,
     altLabel } = newEntry
 
-  return session.run(
-    'MATCH (entry:Entry {id: {id}}) set entry.skillReuseLevel = {skillReuseLevel}, entry.skillType = {skillType}, entry.prefLabel = {prefLabel}, entry.language = {language}, entry.altLabel = altLabel, entry.description = description RETURN entry', 
+  console.log(id)
+  return await session.run(
+    'MATCH (entry:Entry {id: {id}}) set entry.skillReuseLevel = {skillReuseLevel}, entry.skillType = {skillType}, entry.prefLabel = {prefLabel}, entry.altLabel = {altLabel}, entry.description = {description} RETURN entry',
     {
+      id: id,
       skillReuseLevel: skillReuseLevel,
       skillType: skillType,
       prefLabel: prefLabel,
+      altLabel: altLabel,
       language: language,
       description: description
     }
@@ -110,11 +115,11 @@ export const getEntries = async (requestedId, language) => {
 
   // constructing the query for the right language
   var languageClause = language
-    ? `WHERE entry.language = "${language}"`
-    : 'WHERE entry.language = "en"'
+    ? `WHERE currentNode.language = "${language}"`
+    : 'WHERE currentNode.language = "en"'
 
   // constructing query for specific id
-  const whereClause = requestedId ? `entry.id = "${requestedId}"` : ''
+  const whereClause = requestedId ? `currentNode.id = "${requestedId}"` : ''
   var dbClause = languageClause
   if (!whereClause == '') {
     dbClause = languageClause + ' AND ' + whereClause
@@ -122,23 +127,23 @@ export const getEntries = async (requestedId, language) => {
 
   var result = await session.writeTransaction(tx =>
     tx.run(
-      `MATCH (entry: Entry) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN entry, collect(relation), collect(targetNode)`
+      `MATCH (currentNode) ${dbClause} OPTIONAL MATCH (currentNode)-[relation]->(targetNode) ${dbClause} RETURN currentNode, collect(relation), collect(targetNode)`
     )
   )
   if (result.records.length == 0) {
     // if no entries are found set default to english and query again
     // constructing the query for the right language
-    var languageClause = 'WHERE entry.language = "en"'
+    var languageClause = 'WHERE currentNode.language = "en"'
 
     // constructing query for specific id
-    const whereClause = requestedId ? `entry.id = "${requestedId}"` : ''
+    const whereClause = requestedId ? `currentNode.id = "${requestedId}"` : ''
     var dbClause = languageClause
     if (!whereClause == '') {
       dbClause = languageClause + ' AND ' + whereClause
     }
     result = await session.writeTransaction(tx =>
       tx.run(
-        `MATCH (entry: Entry) ${dbClause} OPTIONAL MATCH (entry)-[relation]->(targetNode) ${dbClause} RETURN entry, collect(relation), collect(targetNode)`
+        `MATCH (currentNode) ${dbClause} OPTIONAL MATCH (currentNode)-[relation]->(targetNode) ${dbClause} RETURN currentNode, collect(relation), collect(targetNode)`
       )
     )
   }
@@ -146,7 +151,7 @@ export const getEntries = async (requestedId, language) => {
   const referenceKeys = referenceTypes.map(({ id }) => id)
   const data = result.records
     .map(record => {
-      const rawEntry = record.get('entry').properties
+      const rawEntry = record.get('currentNode').properties
       const rawReferences = record.get('collect(relation)')
       const targetNodes = record.get('collect(targetNode)')
       const references = Object.assign(
