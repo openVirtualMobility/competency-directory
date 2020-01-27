@@ -75,14 +75,14 @@ class Entry extends Component {
               </Button>
             </Link>
           </div>
-          {/* <div style={{ margin: 10, alignSelf: "flex-end" }}>
+          <div style={{ margin: 10, alignSelf: "flex-end" }}>
             <Link href="/entries/23/edit">
               <Button variant="outlined" style={{ alignSelf: "flex-end" }}>
                 <img src={editButton} alt="Logo" />
                 <p style={{ marginLeft: 5 }}>edit</p>
               </Button>
             </Link>
-          </div> */}
+          </div>
         </div>
 
         <div

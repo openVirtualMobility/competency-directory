@@ -8,7 +8,7 @@ import api from "../api"
 import { sortAlphabetically } from "../utils";
 import LocalizedStrings from 'react-localization';
 import backButton from "../assets/arrow-left.svg";
-import editButton from "../assets/edit.svg";
+import saveButton from "../assets/save.svg";
 import Select from "react-select";
 var language = require("../languages/languages.json");
 let strings = new LocalizedStrings(language)
@@ -164,7 +164,7 @@ class Edit extends Component {
                         <Button variant="contained" color="primary" style={{ alignSelf: "flex-end" }}
                             onClick={() => this.save()}
                         >
-                            <img src={editButton} alt="Logo" style={{ color: "red" }} />
+                            <img src={saveButton} alt="Logo" style={{ color: "red" }} />
                             <p style={{ marginLeft: 5 }}>save</p>
                         </Button>
                     </div>
