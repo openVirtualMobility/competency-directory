@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
@@ -100,7 +99,7 @@ class Edit extends Component {
         let newEntryOptions = []
         entries.forEach(entry => {
             // does not allow to add own title to dropdown list for references dropdowns to select
-            if (entry.prefLabel.value != thisPrefLabel) {
+            if (entry.prefLabel.value !== thisPrefLabel) {
                 let newOption = { value: entry, label: entry.prefLabel.value }
                 newEntryOptions.push(newOption)
             }

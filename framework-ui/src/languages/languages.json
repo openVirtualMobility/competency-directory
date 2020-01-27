@@ -42,7 +42,7 @@
 		"showDetails": "toon details",
 		"impressum": "indruk",
 		"privacy": "gegevensbescherming",
-		"title": "",
+		"title": "title",
 		"goBack": "Go Back",
 		"edit": "Edit",
 		"save": "Save"
@@ -57,7 +57,7 @@
 		"type": "escribir a máquina",
 		"showDetails": "mostrar detalles",
 		"impressum": "impresión",
-		"title": "",
+		"title": "title",
 		"privacy": "protección de datos",
 		"goBack": "Go Back",
 		"edit": "Edit",
@@ -74,7 +74,7 @@
 		"showDetails": "mostra dettagli",
 		"impressum": "impressionum",
 		"privacy": "intimità",
-		"title": "",
+		"title": "title",
 		"goBack": "Go Back",
 		"edit": "Edit",
 		"save": "Save"
@@ -90,7 +90,7 @@
 		"showDetails": "Détails de l'émission",
 		"impressum": "mentions légales",
 		"privacy": "Politique de confidentialité",
-		"title": "",
+		"title": "title",
 		"goBack": "Go Back",
 		"edit": "Edit",
 		"save": "Save"
