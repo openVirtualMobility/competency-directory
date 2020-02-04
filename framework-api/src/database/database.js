@@ -106,7 +106,10 @@ export const updateEntry = async (id, lang, newEntry) => {
     altLabel,
   } = newEntry
 
-  // some trickery since we can have multiple prefLabels
+  // some trickery since neo4j needs to interpret this as a Array
+  // however when we return the Data to the User it will interpreted as a Object again
+  // this is due to the fact that neo4j cannot work with nested objects and works with arrays instead
+  // I hope you will not waste as much time on this as I did!
   prefLabel = [JSON.stringify(prefLabel)]
   altLabel = [JSON.stringify(altLabel)]
   description = [JSON.stringify(description)]
@@ -115,9 +118,6 @@ export const updateEntry = async (id, lang, newEntry) => {
   skillReuseLevel = skillReuseLevel.toString()
   skillType = skillType.toString()
   language = language.toString()
-
-  console.log(typeof prefLabel)
-  console.log(prefLabel)
 
   var result = await session.writeTransaction(tx =>
     tx.run(
@@ -134,8 +134,6 @@ export const updateEntry = async (id, lang, newEntry) => {
     )
   )
 
-  console.log('data')
-  console.log(result)
   session.close()
   driver.close()
   return result
@@ -188,7 +186,6 @@ export const getEntries = async (requestedId, language) => {
   const data = result.records
     .map(record => {
       const rawEntry = record.get('currentNode').properties
-      console.log(rawEntry)
       const rawReferences = record.get('collect(relation)')
       const targetNodes = record.get('collect(targetNode)')
       const references = Object.assign(

@@ -47,11 +47,6 @@ const reuseOptions = [
   }
 ];
 
-let essentialPartOfOptions = [];
-let optionalPartOfOptions = [];
-let similiarToOptions = [];
-let needsAsPrerequisiteOptions = [];
-
 class Edit extends Component {
   constructor(props) {
     super(props);
@@ -83,13 +78,20 @@ class Edit extends Component {
         reuseOptions,
         data.skillReuseLevel
       );
-      var defaultEssentialPart = [];
-      var defaultOptionalPartOf = [];
-      var defaultSimiliarTo = [];
-      var defaultNeedsAsPrequisite = [];
 
       // builds the objects that are used in the dropdown selection for the relations
       this.buildRelationsDropdown(entries, data.prefLabel.value);
+
+      var defaultEssentialPart = this.loadDefaultOptions(
+        data.isEssentialPartOf
+      );
+      var defaultOptionalPartOf = this.loadDefaultOptions(
+        data.isOptionalPartOf
+      );
+      var defaultSimiliarTo = this.loadDefaultOptions(data.isSimiliarTo);
+      var defaultNeedsAsPrequisite = this.loadDefaultOptions(
+        data.needsAsPrerequisite
+      );
 
       this.setState({
         entry: data,
@@ -103,6 +105,26 @@ class Edit extends Component {
         loading: false
       });
     });
+  }
+
+  loadDefaultOptions(type) {
+    // because neo4j does not interpret single objects as arrays even tho they should be
+    // we are forcing this behavior here
+    if (!Array.isArray(type)) {
+      type = [type];
+    }
+
+    if (type.length === 0) {
+      return [];
+    }
+    let defaultOptions = [];
+    // searching every option if it includes the id
+    this.state.entryOptions.forEach(item => {
+      if (type.includes(item.value.id)) {
+        defaultOptions.push(item);
+      }
+    });
+    return defaultOptions;
   }
 
   async buildRelationsDropdown(entries, thisPrefLabel) {
@@ -146,9 +168,10 @@ class Edit extends Component {
     // we use this method to unify all fields and build a new entry object due to a limitation
     // in react we cannot udate nested objects in the root Object
     var entry = this.state.entry;
-    entry.language = this.state.selectedLanguageOption.value;
-    entry.skillType = this.state.selectedTypeOption.value;
-    entry.skillReuseLevel = this.state.selectedReuseOption.value;
+    console.log(this.state.selectedEssentialPartOf);
+    // entry.language = this.state.selectedLanguageOption.value;
+    // entry.skillType = this.state.selectedTypeOption.value;
+    // entry.skillReuseLevel = this.state.selectedReuseOption.value;
   }
 
   delete = () => {
@@ -407,7 +430,7 @@ class Edit extends Component {
                         selectedOptionalPartOf: e
                       });
                     }}
-                    options={optionalPartOfOptions}
+                    options={this.state.entryOptions}
                     placeholder="select one or more"
                   />
                 </div>
