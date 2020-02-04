@@ -48,11 +48,19 @@ class Api {
       .catch(function(error) {
         console.log(error);
       });
-  // this.fetch(`/entries/${id}`, {
-  //   method: "DELETE",
-  //   headers: {
-  //     Accept: "application/json; charset=utf-8"
-  //   }
+
+  updateWithId = (id, entry) => {
+    axios
+      .patch(`${this.baseUrl}/entries/${id}`, entry)
+      .then(function(response) {
+        console.log("RESPONSE");
+        console.log(response);
+        return response;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
 
   getReferenceTypes = () =>
     this.fetch("/referenceTypes", {

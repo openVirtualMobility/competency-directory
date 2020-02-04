@@ -168,10 +168,37 @@ class Edit extends Component {
     // we use this method to unify all fields and build a new entry object due to a limitation
     // in react we cannot udate nested objects in the root Object
     var entry = this.state.entry;
-    console.log(this.state.selectedEssentialPartOf);
-    // entry.language = this.state.selectedLanguageOption.value;
-    // entry.skillType = this.state.selectedTypeOption.value;
-    // entry.skillReuseLevel = this.state.selectedReuseOption.value;
+    entry.language = this.state.selectedLanguageOption.value;
+    entry.skillType = this.state.selectedTypeOption.value;
+    entry.skillReuseLevel = this.state.selectedReuseOption.value;
+
+    // relations
+    let essentials = [];
+    this.state.selectedEssentialPartOf.forEach(item => {
+      essentials.push(item.value.id);
+    });
+    entry.isEssentialPartOf = essentials;
+
+    let optionals = [];
+    this.state.selectedOptionalPartOf.forEach(item => {
+      optionals.push(item.value.id);
+    });
+    entry.isOptionalPartOf = optionals;
+
+    let similiars = [];
+    this.state.selectedSimiliarTo.forEach(item => {
+      similiars.push(item.value.id);
+    });
+    entry.isSimilarTo = similiars;
+
+    let prerequisites = [];
+    this.state.selectedNeedsAsRequisite.forEach(item => {
+      prerequisites.push(item.value.id);
+    });
+    entry.needsAsPrerequisite = prerequisites;
+
+    console.log(entry);
+    api.updateWithId(this.props.match.params.id, entry);
   }
 
   delete = () => {
@@ -366,6 +393,13 @@ class Edit extends Component {
                 fullWidth
                 label="Description"
                 value={this.state.entry.description.value}
+                onChange={e => {
+                  let newEntry = this.state.entry;
+                  newEntry.description.value = e.target.value;
+                  this.setState({
+                    entry: newEntry
+                  });
+                }}
                 name="Description"
                 rows="9"
                 multiline
@@ -425,6 +459,7 @@ class Edit extends Component {
                   <Select
                     value={this.state.selectedOptionalPartOf}
                     defaultValue={this.state.selectedOptionalPartOf}
+                    isMulti
                     onChange={e => {
                       this.setState({
                         selectedOptionalPartOf: e
