@@ -97,7 +97,7 @@ export const updateEntry = async (id, lang, newEntry) => {
   )
   const session = driver.session()
 
-  const {
+  let {
     description,
     skillReuseLevel,
     skillType,
@@ -105,32 +105,40 @@ export const updateEntry = async (id, lang, newEntry) => {
     language,
     altLabel,
   } = newEntry
+
+  // some trickery since we can have multiple prefLabels
+  prefLabel = [JSON.stringify(prefLabel)]
+  altLabel = [JSON.stringify(altLabel)]
+  description = [JSON.stringify(description)]
+
   id = id.toString()
+  skillReuseLevel = skillReuseLevel.toString()
+  skillType = skillType.toString()
+  language = language.toString()
 
-  // let data = await session.run(
-  //   'MATCH (entry:Entry {id: $id}) set entry.skillReuseLevel=$skillReuseLevel, entry.skillType=$skillType, entry.prefLabel=$prefLabel, entry.altLabel=$altLabel, entry.description=$description RETURN entry',
-  //   {
-  //     id: id,
-  //     skillReuseLevel: skillReuseLevel,
-  //     skillType: skillType,
-  //     prefLabel: prefLabel,
-  //     altLabel: altLabel,
-  //     language: language,
-  //     description: description,
-  //   }
-  // )
+  console.log(typeof prefLabel)
+  console.log(prefLabel)
 
-  let result = await session.run(
-    'MATCH (entry: entry {id: $id}) return entry',
-    {
-      id: id,
-    }
+  var result = await session.writeTransaction(tx =>
+    tx.run(
+      'MATCH (currentNode {id: $id}) OPTIONAL MATCH (currentNode)-[relation]->(targetNode) set currentNode.skillReuseLevel=$skillReuseLevel, currentNode.skillType=$skillType, currentNode.prefLabel=$prefLabel, currentNode.altLabel=$altLabel, currentNode.description=$description return currentNode',
+      {
+        id: id,
+        skillReuseLevel: skillReuseLevel,
+        skillType: skillType,
+        prefLabel: prefLabel,
+        language: language,
+        description: description,
+        altLabel: altLabel,
+      }
+    )
   )
+
   console.log('data')
-  console.log(data)
+  console.log(result)
   session.close()
   driver.close()
-  return data
+  return result
 }
 
 export const getEntries = async (requestedId, language) => {
@@ -180,6 +188,7 @@ export const getEntries = async (requestedId, language) => {
   const data = result.records
     .map(record => {
       const rawEntry = record.get('currentNode').properties
+      console.log(rawEntry)
       const rawReferences = record.get('collect(relation)')
       const targetNodes = record.get('collect(targetNode)')
       const references = Object.assign(
