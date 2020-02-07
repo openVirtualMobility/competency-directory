@@ -1,6 +1,7 @@
 import Router from 'koa-router'
 import * as jsonld from 'jsonld'
 import * as database from '../database/database'
+var config = require('../config.json')
 
 const entries = new Router({
   prefix: '/entries',
@@ -8,17 +9,34 @@ const entries = new Router({
 
 entries
   .get('/', async (ctx, next) => {
-    const { data } = await database.getEntries()
+    const { data } = await database.getEntries(null, ctx.query.language)
+    console.log(ctx.header.accept)
     ctx.data = data
     await next()
   })
   .get('/:id', async (ctx, next) => {
-    const { data } = await database.getEntries(ctx.params.id)
+    const { data } = await database.getEntries(
+      ctx.params.id,
+      ctx.query.language
+    )
     ctx.data = data
     await next()
   })
+  .patch('/:id', async (ctx, next) => {
+    const data = await database.updateEntry(
+      ctx.params.id,
+      ctx.query.language,
+      ctx.request.body
+    )
+    ctx.data = data.records
+    await next()
+  })
+  .delete('/:id', async (ctx, next) => {
+    const data = await database.deleteEntry(ctx.params.id)
+    ctx.status = 200
+  })
   .use(async (ctx, next) => {
-    if (ctx.data.length < 1) {
+    if (ctx.data.length < 1 || ctx.status === 200) {
       ctx.status = 404
       ctx.body = JSON.stringify({ error: 'Unknown Entry ID' })
       return undefined
@@ -29,7 +47,7 @@ entries
     const entries = ctx.data.map(date => {
       return {
         ...date,
-        '@context': 'http://localhost:6060/context/',
+        '@context': config.baseurl + '/context/',
       }
     })
     ctx.entries = entries
@@ -40,7 +58,7 @@ entries
       ctx.body = await jsonld.expand(ctx.entries)
     } else {
       ctx.body = await jsonld.compact(ctx.entries, {
-        '@context': 'http://localhost:6060/context/',
+        '@context': config.baseurl + '/context/',
       })
     }
     await next()

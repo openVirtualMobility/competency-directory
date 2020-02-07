@@ -2,19 +2,20 @@
 
 ## Installation
 
-To get this project up and running please install the docker engine according to your OS.
+To get this project up and running please install the docker engine according to your OS. On Linux install build-essentials to allow native compile of several npm tools.
 
 To install the dependencies of the project, run `npm run install:all` in the root folder of the project.
 
 ## Starting the Application
 
-All you need to do afterwards is running `docker-compose up` in the root folder of the project. The UI can then be found at [http://localhost:3000](http://localhost:3000) and the API at [http://localhost:6060](http://localhost:6060).
+All you need to do afterwards is running `docker-compose up` in the root folder of the project. The UI can then be found at [http://localhost:3000](http://localhost:3000) and the API at [http://localhost:80](http://localhost:80).
 
 ## Development
 
 ### The UI and API
 
 The according `src` folders of the UI (./framework-ui/src) and the API (./framework-api/src) are mounted to their respective containers and file changes are being monitored so the according server will be restarted automatically with the changes and the UI also has hot reloading enabled.
+The API can server the UI as well, if you copy (after build) the framework-ui/build folder into the framework-api/src/build folder. This is useful in case you want to open only one port to outside (or proxy it).
 
 ### The Database
 

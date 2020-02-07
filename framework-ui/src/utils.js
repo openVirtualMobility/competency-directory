@@ -1,28 +1,45 @@
 export const setEntryInUrl = id => {
+  var slicedId = id.slice(-2);
+  var parsedId = parseInt(slicedId);
+  var finalId;
+  if (!isNaN(parsedId)) {
+    finalId = parsedId
+  } else {
+    slicedId = id.slice(-1);
+    parsedId = parseInt(slicedId);
+    finalId = parsedId
+  }
+
   const url = new URL(window.location);
-  url.search = `?entry=${id}`;
+  url.search = `?${finalId}`;
+  window.history.pushState({}, "", url.toString());
+};
+
+export const navigateTo = route => {
+  const url = new URL(window.location);
+  url.search = `${route}`;
   window.history.pushState({}, "", url.toString());
 };
 
 export const sortAlphabetically = (array, getAttribute) => {
-    if (!array) {
-        console.log("No array data to sort");
-        return []
+  if (!array) {
+    console.log("No array data to sort");
+    return []
+  }
+  return array.sort((a, b) => {
+    var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
+    var nameB = getAttribute(b).toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
     }
-    return array.sort((a, b) => {
-            var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
-            var nameB = getAttribute(b).toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-                return -1;
-            }
-            if (nameA > nameB) {
-                return 1;
-            }
+    if (nameA > nameB) {
+      return 1;
+    }
 
-            // names must be equal
-            return 0;
-        }
-    );
+    // names must be equal
+    return 0;
+  }
+  );
 }
 
 export const searchRanked = (searchForInput, data) => {
@@ -41,8 +58,8 @@ export const searchRanked = (searchForInput, data) => {
           return item.prefLabel.value.includes(curr)
             ? prev + 1
             : item.description.value.includes(curr)
-            ? prev + 1
-            : prev;
+              ? prev + 1
+              : prev;
         }, 0);
       return { ranking: found, value: item };
     })

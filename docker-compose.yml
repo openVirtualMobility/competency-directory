@@ -1,5 +1,6 @@
 version: "3"
 services:
+# client-app build folder has to be copied to framework-api
   client-app:
     build: ./framework-ui
     image: framework-ui

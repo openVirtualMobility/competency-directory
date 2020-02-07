@@ -1,3 +1,5 @@
+var config = require("../config.json");
+
 export const context = {
   '@context': {
     id: '@id',
@@ -18,14 +20,14 @@ export const context = {
     prefLabel: 'http://www.w3.org/2004/02/skos/core#prefLabel',
     topConceptOf: 'http://www.w3.org/2004/02/skos/core#topConceptOf',
     label: {
-      '@id': 'http://localhost:6060/context/referenceType',
+      '@id': config.baseurl+'/context/referenceType',
       '@type': 'http://schema.org/Text',
     },
-    isEssentialPartOf: 'http://localhost:6060/context/isEssentialPartOf',
-    isOptionalPartOf: 'http://localhost:6060/context/isOptionalPartOf',
-    needsAsPrerequisite: 'http://localhost:6060/context/needsAsPrerequisite',
-    isSimilarTo: 'http://localhost:6060/context/isSimilarTo',
-    isSameAs: 'http://localhost:6060/context/isSameAs',
+    isEssentialPartOf: config.baseurl+'/context/isEssentialPartOf',
+    isOptionalPartOf: config.baseurl+'/context/isOptionalPartOf',
+    needsAsPrerequisite: config.baseurl+'/context/needsAsPrerequisite',
+    isSimilarTo: config.baseurl+'/context/isSimilarTo',
+    isSameAs: config.baseurl+'/context/isSameAs',
     key: 'http://schema.org/Text',
   },
 }
