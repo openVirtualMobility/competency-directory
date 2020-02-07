@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -321,6 +319,7 @@ class Edit extends Component {
                   value={this.state.selectedTypeOption}
                   defaultValue={this.state.selectedTypeOption}
                   onChange={e => {
+                    console.log(e);
                     this.setState({
                       selectedTypeOption: e
                     });

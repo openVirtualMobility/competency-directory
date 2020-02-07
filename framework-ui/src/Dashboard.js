@@ -9,37 +9,38 @@ import { sortAlphabetically, searchRanked } from "./utils";
 import { EntryCard } from "./EntryCard";
 import { EntryModal } from "./EntryModal";
 import Footer from "./Footer";
-import LocalizedStrings from 'react-localization';
+import Button from "@material-ui/core/Button";
+import saveButton from "./assets/plus-square.svg";
+
+import LocalizedStrings from "react-localization";
 var language = require("./languages/languages.json");
 
 const options = [
-  { value: 'en', label: 'English' },
-  { value: 'de', label: 'German' },
-  { value: 'nl', label: 'Dutch' },
-  { value: 'es', label: 'Spanish' },
-  { value: 'it', label: 'Italian' },
-  { value: 'fr', label: 'French' },
+  { value: "en", label: "English" },
+  { value: "de", label: "German" },
+  { value: "nl", label: "Dutch" },
+  { value: "es", label: "Spanish" },
+  { value: "it", label: "Italian" },
+  { value: "fr", label: "French" }
 ];
 
 let strings = new LocalizedStrings(language);
-
 
 class Dashboard extends Component {
   state = {
     entries: [],
     referenceTypes: [],
     urlEntry: null,
-    selectedOption: null,
+    selectedOption: null
   };
 
   async componentDidMount() {
-
     // settings the language
     let lang = localStorage.getItem("language");
     if (lang) {
       strings.setLanguage(lang);
     } else {
-      lang = "en"
+      strings.setLanguage("en");
     }
     const getEntriesResponse = await api.getEntries(lang);
     const getEntriesData = await getEntriesResponse.json();
@@ -48,7 +49,8 @@ class Dashboard extends Component {
       // Tell the sort function to sort by which attribute
       entry => entry.prefLabel.value
     );
-    this.setState({ entries });
+    var defaultLang = this.setDropdownDefault(options, lang);
+    this.setState({ entries: entries, selectedOption: defaultLang });
 
     const getReferenceTypesResponse = await api.getReferenceTypes();
     const getReferenceTypesData = await getReferenceTypesResponse.json();
@@ -66,7 +68,6 @@ class Dashboard extends Component {
       this.setState({ urlEntry });
       this.setPreSelectedEntry(urlEntry);
     }
-
     this.setEntryFromUrl();
 
     // Listen to history changes
@@ -134,19 +135,28 @@ class Dashboard extends Component {
     this.setState({ selectedOption });
     const getEntriesResponse = await api.getEntries(selectedOption.value);
     const getEntriesData = await getEntriesResponse.json();
-    console.log(getEntriesData)
+    console.log(getEntriesData);
     const entries = sortAlphabetically(
       getEntriesData["@graph"],
       // Tell the sort function to sort by which attribute
       entry => entry.prefLabel.value
     );
-    this.setState({ entries })
+    this.setState({ entries });
   };
+
+  setDropdownDefault(options, entryValue) {
+    // checks what the default value for the dropdown selections should be
+    for (const item of options) {
+      if (item.value === entryValue) {
+        return item;
+      }
+    }
+  }
 
   render() {
     const { entries, referenceTypes, urlEntry } = this.state;
     return (
-      <div >
+      <div>
         <Downshift
           itemToString={item => (item ? item.prefLabel.value : "")}
           stateReducer={this.stateReducer}
@@ -203,18 +213,49 @@ class Dashboard extends Component {
                       {strings.openVM}
                     </Typography>
                   </div>
-                  <div style={{ minWidth: "30%", justifyContent: "flex-end" }}>
+
+                  <div
+                    style={{
+                      minWidth: "15%",
+                      maxWidth: "20%",
+                      alignSelf: "center"
+                    }}
+                  >
                     <Select
                       value={this.state.selectedOption}
+                      defaultValue={this.state.language}
                       onChange={this.handleChange}
                       options={options}
                     />
+                  </div>
+                  <div
+                    style={{
+                      alignSelf: "center"
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        alignSelf: "flex-end",
+                        marginLeft: 10,
+                        marginRight: 10
+                      }}
+                      onClick={() => this.save()}
+                    >
+                      <img
+                        src={saveButton}
+                        alt="Logo"
+                        style={{ color: "red" }}
+                      />
+                      <p style={{ marginLeft: 5 }}>new competency</p>
+                    </Button>
                   </div>
                 </div>
 
                 <label {...downShift.getLabelProps()}>
                   {strings.searchEntries}:&nbsp;&nbsp;
-              </label>
+                </label>
                 <Input
                   {...downShift.getInputProps({
                     placeholder: strings.labelAndDescription
@@ -246,9 +287,7 @@ class Dashboard extends Component {
           }}
         </Downshift>
         <Footer strings={strings} />
-
       </div>
-
     );
   }
 }
