@@ -86,7 +86,7 @@ class Edit extends Component {
       var defaultOptionalPartOf = this.loadDefaultOptions(
         data.isOptionalPartOf
       );
-      var defaultSimiliarTo = this.loadDefaultOptions(data.isSimiliarTo);
+      var defaultsimilarTo = this.loadDefaultOptions(data.isSimilarTo);
       var defaultNeedsAsPrequisite = this.loadDefaultOptions(
         data.needsAsPrerequisite
       );
@@ -98,7 +98,7 @@ class Edit extends Component {
         selectedTypeOption: defaultType,
         selectedEssentialPartOf: defaultEssentialPart,
         selectedOptionalPartOf: defaultOptionalPartOf,
-        selectedSimiliarTo: defaultSimiliarTo,
+        selectedsimilarTo: defaultsimilarTo,
         selectedNeedsAsRequisite: defaultNeedsAsPrequisite,
         loading: false
       });
@@ -183,11 +183,11 @@ class Edit extends Component {
     });
     entry.isOptionalPartOf = optionals;
 
-    let similiars = [];
-    this.state.selectedSimiliarTo.forEach(item => {
-      similiars.push(item.value.id);
+    let similars = [];
+    this.state.selectedsimilarTo.forEach(item => {
+      similars.push(item.value.id);
     });
-    entry.isSimilarTo = similiars;
+    entry.isSimilarTo = similars;
 
     let prerequisites = [];
     this.state.selectedNeedsAsRequisite.forEach(item => {
@@ -489,11 +489,11 @@ class Edit extends Component {
                   }}
                 >
                   <Select
-                    value={this.state.similiarToOptions}
-                    defaultValue={this.state.selectedSimiliarTo}
+                    value={this.state.similarToOptions}
+                    defaultValue={this.state.selectedsimilarTo}
                     onChange={e => {
                       this.setState({
-                        selectedSimiliarTo: e
+                        selectedsimilarTo: e
                       });
                     }}
                     isMulti

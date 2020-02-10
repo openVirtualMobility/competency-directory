@@ -90,6 +90,82 @@ export const deleteEntry = async id => {
   return result
 }
 
+const updateRelation = async (id, secIds, relation) => {
+  // go through each id and create a new relation for it
+  secIds.map(async essId => {
+    const driver = neo4j.driver(
+      'bolt://db:7687',
+      neo4j.auth.basic('neo4j', 'qwerqwer')
+    )
+    const session = driver.session()
+    // since the id has the wrong format and we only need the last 2 digits we use a helper function to get the real ID
+    var slicedId = essId.slice(-2)
+    var parsedId = parseInt(slicedId)
+    var finalId
+    if (!isNaN(parsedId)) {
+      finalId = parsedId
+    } else {
+      slicedId = id.slice(-1)
+      parsedId = parseInt(slicedId)
+      finalId = parsedId
+    }
+    // parse back to string
+    finalId = finalId.toString()
+
+    // Since we cannot use Arguments as Relationtypes we need to use a switch case and construct static queries beforehand
+    switch (relation) {
+      case 'isEssentialPartOf':
+        var createResult = await session.writeTransaction(tx =>
+          tx.run(
+            'match (a:entry {id:$id}), (b:entry {id:$finalId}) create (a)-[r:isEssentialPartOf]->(b) return a, b, r',
+            {
+              id: id,
+              finalId: finalId,
+            }
+          )
+        )
+        break
+      case 'isOptionalPartOf':
+        var createResult = await session.writeTransaction(tx =>
+          tx.run(
+            'match (a:entry {id:$id}), (b:entry {id:$finalId}) create (a)-[r:isOptionalPartOf]->(b) return a, b, r',
+            {
+              id: id,
+              finalId: finalId,
+            }
+          )
+        )
+        break
+      case 'isSimilarTo':
+        var createResult = await session.writeTransaction(tx =>
+          tx.run(
+            'match (a:entry {id:$id}), (b:entry {id:$finalId}) create (a)-[r:isSimilarTo]->(b) return a, b, r',
+            {
+              id: id,
+              finalId: finalId,
+            }
+          )
+        )
+        break
+      case 'needsAsPrerequisite':
+        var createResult = await session.writeTransaction(tx =>
+          tx.run(
+            'match (a:entry {id:$id}), (b:entry {id:$finalId}) create (a)-[r:needsAsPrerequisite]->(b) return a, b, r',
+            {
+              id: id,
+              finalId: finalId,
+            }
+          )
+        )
+        break
+      default:
+        console.log(' sorry no matching relations')
+    }
+    session.close()
+    driver.close()
+  })
+}
+
 export const updateEntry = async (id, lang, newEntry) => {
   const driver = neo4j.driver(
     'bolt://db:7687',
@@ -104,6 +180,10 @@ export const updateEntry = async (id, lang, newEntry) => {
     prefLabel,
     language,
     altLabel,
+    isEssentialPartOf,
+    isOptionalPartOf,
+    isSimilarTo,
+    needsAsPrerequisite,
   } = newEntry
 
   // some trickery since neo4j needs to interpret this as a Array
@@ -133,9 +213,64 @@ export const updateEntry = async (id, lang, newEntry) => {
       }
     )
   )
-
   session.close()
+
+  // update the relations
+  // this on is tricky due some limitations in neo4j we cannot simply update the relations
+  // we need to delete the old one and create a new one
+  // since neo4j has some more limitations we need to update the relations one by one
+
+  // update isEssentialPartOf
+
+  const essentialSession = driver.session()
+  // delete any relations
+  var result2 = await essentialSession.writeTransaction(tx => {
+    tx.run(
+      'MATCH (currentNode:entry {id: $id}) -[r:isEssentialPartOf]->(targetNode:entry) delete r return currentNode',
+      {
+        id: id,
+      }
+    )
+    tx.run(
+      'MATCH (currentNode:entry {id: $id}) -[r:isOptionalPartOf]->(targetNode:entry) delete r return currentNode',
+      {
+        id: id,
+      }
+    )
+    tx.run(
+      'MATCH (currentNode:entry {id: $id}) -[r:isSimilarTo]->(targetNode:entry) delete r return currentNode',
+      {
+        id: id,
+      }
+    )
+    tx.run(
+      'MATCH (currentNode:entry {id: $id}) -[r:needsAsPrerequisite]->(targetNode:entry) delete r return currentNode',
+      {
+        id: id,
+      }
+    )
+  })
+  essentialSession.close()
+
   driver.close()
+
+  // if there are relations we can use create new relations
+  if (isEssentialPartOf.length != 0) {
+    updateRelation(id, isEssentialPartOf, 'isEssentialPartOf')
+  }
+
+  if (isOptionalPartOf.length != 0) {
+    updateRelation(id, isOptionalPartOf, 'isOptionalPartOf')
+  }
+
+  if (isSimilarTo.length != 0) {
+    updateRelation(id, isSimilarTo, 'isSimilarTo')
+  }
+
+  if (needsAsPrerequisite.length != 0) {
+    updateRelation(id, needsAsPrerequisite, 'needsAsPrerequisite')
+  }
+
   return result
 }
 
