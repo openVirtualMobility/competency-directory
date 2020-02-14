@@ -3,11 +3,11 @@ export const setEntryInUrl = id => {
   var parsedId = parseInt(slicedId);
   var finalId;
   if (!isNaN(parsedId)) {
-    finalId = parsedId
+    finalId = parsedId;
   } else {
     slicedId = id.slice(-1);
     parsedId = parseInt(slicedId);
-    finalId = parsedId
+    finalId = parsedId;
   }
 
   const url = new URL(window.location);
@@ -24,7 +24,7 @@ export const navigateTo = route => {
 export const sortAlphabetically = (array, getAttribute) => {
   if (!array) {
     console.log("No array data to sort");
-    return []
+    return [];
   }
   return array.sort((a, b) => {
     var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
@@ -38,28 +38,30 @@ export const sortAlphabetically = (array, getAttribute) => {
 
     // names must be equal
     return 0;
-  }
-  );
-}
+  });
+};
 
 export const searchRanked = (searchForInput, data) => {
   const rankedEntries = data
     .map(item => {
       let found = 0;
-      if (item.prefLabel.value.includes(searchForInput)) {
+      searchForInput = searchForInput.toLowerCase();
+      let title = item.prefLabel.value.toLowerCase();
+      if (title.includes(searchForInput)) {
         found = found + 5;
       }
-      if (item.description.value.includes(searchForInput)) {
-        found = found + 5;
+      let description = item.description.value.toLowerCase();
+      if (description.includes(searchForInput)) {
+        found = found + 2;
       }
       found =
         found +
         searchForInput.split(" ").reduce((prev, curr) => {
-          return item.prefLabel.value.includes(curr)
+          return title.includes(curr)
             ? prev + 1
-            : item.description.value.includes(curr)
-              ? prev + 1
-              : prev;
+            : description.includes(curr)
+            ? prev + 1
+            : prev;
         }, 0);
       return { ranking: found, value: item };
     })
@@ -74,7 +76,7 @@ export const searchRanked = (searchForInput, data) => {
   return rankedEntries
     .slice(
       0,
-      Math.floor(data.length / (highestRanking * (searchForInput.length / 6)))
+      Math.floor(data.length / (highestRanking * (searchForInput.length / 12)))
     )
     .map(({ value }) => value);
 };
