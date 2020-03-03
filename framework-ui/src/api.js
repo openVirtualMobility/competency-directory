@@ -32,6 +32,21 @@ class Api {
       }
     });
 
+    createNew = entry => {
+      axios
+        .post(`${this.baseUrl}/entries/`, entry)
+        .then(function(response) {
+          console.log("RESPONSE");
+          console.log(response);
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    };
+  
+  
+
   getEntryWithId = (id, lang) =>
     this.fetch(`/entries/${id}?language=${lang}`, {
       method: "GET"

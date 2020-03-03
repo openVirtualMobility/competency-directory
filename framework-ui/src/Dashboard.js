@@ -9,6 +9,7 @@ import { sortAlphabetically, searchRanked } from "./utils";
 import { EntryCard } from "./EntryCard";
 import { EntryModal } from "./EntryModal";
 import Footer from "./Footer";
+import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import saveButton from "./assets/plus-square.svg";
 
@@ -233,23 +234,24 @@ class Dashboard extends Component {
                       alignSelf: "center"
                     }}
                   >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      style={{
-                        alignSelf: "flex-end",
-                        marginLeft: 10,
-                        marginRight: 10
-                      }}
-                      onClick={() => this.save()}
-                    >
-                      <img
-                        src={saveButton}
-                        alt="Logo"
-                        style={{ color: "red" }}
-                      />
-                      <p style={{ marginLeft: 5 }}>new competency</p>
-                    </Button>
+                    <Link href={"/entries/new"}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{
+                          alignSelf: "flex-end",
+                          marginLeft: 10,
+                          marginRight: 10
+                        }}
+                      >
+                        <img
+                          src={saveButton}
+                          alt="Logo"
+                          style={{ color: "red" }}
+                        />
+                        <p style={{ marginLeft: 5 }}>new competency</p>
+                      </Button>
+                    </Link>
                   </div>
                 </div>
 
