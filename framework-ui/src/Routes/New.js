@@ -50,9 +50,28 @@ class New extends Component {
     super(props);
     this.state = {
       loading: true,
-      entry: null,
+      entry: {
+        id: "",
+        language: "",
+        skillReuseLevel: "",
+        isEssentialPartOf: [],
+        isOptionalPartOf: [],
+        isSameAs: [],
+        isSimilarTo: [],
+        needsAsPrerequisite: [],
+        description: {
+          language: "",
+          value: ""
+        },
+        altLabel: [],
+        prefLabel: { language: "", value: "" }
+      },
       setOpen: false,
-      entryOptions: []
+      entryOptions: [],
+      selectedEssentialPartOf: [],
+      selectedOptionalPartOf: [],
+      selectedsimilarTo: [],
+      selectedNeedsAsRequisite: []
     };
   }
 
@@ -74,22 +93,6 @@ class New extends Component {
     this.buildRelationsDropdown(entries, "");
 
     this.setState({
-      entry: {
-        id: "",
-        language: "",
-        skillReuseLevel: "",
-        isEssentialPartOf: [],
-        isOptionalPartOf: [],
-        isSameAs: [],
-        isSimilarTo: [],
-        needsAsPrerequisite: [],
-        description: {
-          language: "",
-          value: ""
-        },
-        altLabel: [],
-        prefLabel: { language: "", value: "" }
-      },
       loading: false
     });
   }
@@ -154,6 +157,10 @@ class New extends Component {
       prerequisites.push(item.value.id);
     });
     entry.needsAsPrerequisite = prerequisites;
+
+    //because of a weird way the backend needs preflabel and description to be wrapped inside a array
+    entry.prefLabel = [entry.prefLabel];
+    entry.description = [entry.description];
 
     console.log(entry);
     api.createNew(entry);

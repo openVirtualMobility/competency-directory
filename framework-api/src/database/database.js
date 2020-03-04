@@ -73,6 +73,38 @@ export const getReferences = async () => {
   })
 }
 
+export const createNewEntry = async newEntry => {
+  const driver = neo4j.driver(
+    'bolt://db:7687',
+    neo4j.auth.basic('neo4j', 'qwerqwer')
+  )
+  const session = driver.session()
+
+  let prefLabel = newEntry.prefLabel.map(x => JSON.stringify(x))
+  let altLabel = newEntry.altLabel.map(x => JSON.stringify(x))
+  let description = newEntry.description.map(x => JSON.stringify(x))
+
+  let props = newEntry
+  let id = Math.floor(Math.random() * Math.floor(300)).toString()
+  props.id = id
+  props.prefLabel = prefLabel
+  props.altLabel = altLabel
+  props.description = description
+
+  await session.writeTransaction(tx =>
+    tx.run(
+      `
+      UNWIND $props AS entry
+      CREATE (node:entry)
+      SET node = entry
+      `,
+      { props }
+    )
+  )
+  session.close()
+  console.log(props)
+}
+
 export const deleteEntry = async id => {
   const driver = neo4j.driver(
     'bolt://db:7687',

@@ -22,6 +22,13 @@ entries
     ctx.data = data
     await next()
   })
+  .post('/', async (ctx, next) => {
+    console.log(ctx.request.body)
+    let body = ctx.request.body
+    await database.createNewEntry(body)
+    ctx.data = ['debug']
+    await next()
+  })
   .patch('/:id', async (ctx, next) => {
     const data = await database.updateEntry(
       ctx.params.id,
