@@ -119,13 +119,36 @@ router.get('/populate', async (ctx, next) => {
       { props }
     )
   )
-  const { data: referenceTypes } = await db.getReferenceTypes()
-  await referenceData.forEach(async ({ sourceId, referenceType, targetId }) => {
+
+  for await (let data of referenceData) {
+    console.log(data)
+    let sourceId = data.sourceId
+    let referenceType = data.referenceType
+    let targetId = data.targetId
+
     const session = ctx.driver.session()
-    const referenceTypeLabel = referenceTypes.reduce(
-      (prev, { id, label }) => (id === referenceType ? label : prev),
-      undefined
-    )
+    let referenceTypeLabel = ''
+    // WE use a simple switch case
+    switch (referenceType) {
+      case 'isEssentialPartOf':
+        referenceTypeLabel = 'is essential subskill/part of'
+        break
+      case 'isOptionalPartOf':
+        referenceTypeLabel = 'is optional subskill/part of'
+        break
+      case 'needsAsPrerequisite':
+        referenceTypeLabel = 'needs as prerequisite'
+        break
+      case 'isSimilarTo':
+        referenceTypeLabel = 'is similar to'
+        break
+      case 'isSameAs':
+        referenceTypeLabel = 'is same as'
+        break
+      default:
+        console.log('no reference Label')
+    }
+
     await session.writeTransaction(tx =>
       tx.run(
         `
@@ -136,7 +159,8 @@ router.get('/populate', async (ctx, next) => {
       )
     )
     session.close()
-  })
+  }
+
   const result = await ctx.session.writeTransaction(tx =>
     tx.run(
       `MATCH (n)
