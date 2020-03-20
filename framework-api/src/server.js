@@ -1,6 +1,6 @@
 import Koa from 'koa'
 import Router from 'koa-router'
-import serve from "koa-static"
+import serve from 'koa-static'
 import { context } from './database/context'
 import { entries } from './routes/entries'
 import { auth } from './routes/auth'
@@ -15,18 +15,17 @@ import { references as referenceData } from './database/references'
 import koaBody from 'koa-body'
 import koaSend from 'koa-send'
 
-
 const app = new Koa()
 const router = new Router()
 
-app.use(serve("./build"))
+app.use(serve('./build'))
 
 // CORS
 app.use(cors())
 
 // logger
 app.use(async (ctx, next) => {
-  ctx.url = ctx.url.replace(/%22/g, "\"");
+  ctx.url = ctx.url.replace(/%22/g, '"')
   await next()
   const rt = ctx.response.get('X-Response-Time')
   console.log(`${ctx.method} ${ctx.url} - ${rt}`)
@@ -35,27 +34,27 @@ app.use(async (ctx, next) => {
 // detect GET of any deep-link by browsers (text/html clients) and send them the index.html instead
 app.use(async (ctx, next) => {
   if (ctx.request.method != 'GET') {
-    await next();
-    return;
+    await next()
+    return
   }
   // in case client accepts html and json but html is of higher prio (lower index)  send the website
   // otherwise send the json API answer
   switch (ctx.accepts('html', 'json')) {
     case 'html':
-      console.log("Sending default html page")
-      await koaSend(ctx, 'index.html', { root: './build' });
-      break;
+      console.log('Sending default html page')
+      await koaSend(ctx, 'index.html', { root: './build' })
+      break
     case 'json':
-      await next();
-      break;
+      await next()
+      break
     default:
-      await next();
+      await next()
     // ctx.throw(406, 'client must accept html or json');
   }
-});
+})
 
 // using the koa bodyParser
-app.use(koaBody());
+app.use(koaBody())
 
 // x-response-time
 app.use(async (ctx, next) => {
@@ -65,13 +64,11 @@ app.use(async (ctx, next) => {
   ctx.set('X-Response-Time', `${ms}ms`)
 })
 
-
 // Set defaults for the api
 app.use(async (ctx, next) => {
   ctx.type = 'application/json'
   await next()
 })
-
 
 // Context
 router.get('/context', async (ctx, next) => {
@@ -81,7 +78,8 @@ router.get('/context', async (ctx, next) => {
 
 // DB Driver and session setup
 app.use(async (ctx, next) => {
-  ctx.driver = neo4j.driver(  // 192.168.178.47
+  ctx.driver = neo4j.driver(
+    // 192.168.178.47
     'bolt://db:7687',
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
@@ -99,7 +97,6 @@ router.get('/deleteAll', async (ctx, next) => {
   ctx.body = JSON.stringify(result)
   await next()
 })
-
 
 // TODO when auth works this path is only allowed for admins
 router.get('/populate', async (ctx, next) => {
@@ -119,13 +116,36 @@ router.get('/populate', async (ctx, next) => {
       { props }
     )
   )
-  const { data: referenceTypes } = await db.getReferenceTypes()
-  await referenceData.forEach(async ({ sourceId, referenceType, targetId }) => {
+
+  for await (let data of referenceData) {
+    console.log(data)
+    let sourceId = data.sourceId
+    let referenceType = data.referenceType
+    let targetId = data.targetId
+
     const session = ctx.driver.session()
-    const referenceTypeLabel = referenceTypes.reduce(
-      (prev, { id, label }) => (id === referenceType ? label : prev),
-      undefined
-    )
+    let referenceTypeLabel = ''
+    // WE use a simple switch case
+    switch (referenceType) {
+      case 'isEssentialPartOf':
+        referenceTypeLabel = 'is essential subskill/part of'
+        break
+      case 'isOptionalPartOf':
+        referenceTypeLabel = 'is optional subskill/part of'
+        break
+      case 'needsAsPrerequisite':
+        referenceTypeLabel = 'needs as prerequisite'
+        break
+      case 'isSimilarTo':
+        referenceTypeLabel = 'is similar to'
+        break
+      case 'isSameAs':
+        referenceTypeLabel = 'is same as'
+        break
+      default:
+        console.log('no reference Label')
+    }
+
     await session.writeTransaction(tx =>
       tx.run(
         `
@@ -136,7 +156,8 @@ router.get('/populate', async (ctx, next) => {
       )
     )
     session.close()
-  })
+  }
+
   const result = await ctx.session.writeTransaction(tx =>
     tx.run(
       `MATCH (n)

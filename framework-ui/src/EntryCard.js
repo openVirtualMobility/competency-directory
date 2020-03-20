@@ -6,24 +6,22 @@ import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import { Route } from "react-router-dom"
-import Link from '@material-ui/core/Link';
+import { Route } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 const onClick = (history, id) => {
-
   var slicedId = id.slice(-2);
   var parsedId = parseInt(slicedId);
   var finalId;
   if (!isNaN(parsedId)) {
-    finalId = parsedId
+    finalId = parsedId;
   } else {
     slicedId = id.slice(-1);
     parsedId = parseInt(slicedId);
-    finalId = parsedId
+    finalId = parsedId;
   }
   history.push(`entries/${finalId}`);
-
-}
+};
 
 export const EntryCard = ({
   item,
@@ -64,22 +62,23 @@ export const EntryCard = ({
             </Typography>
             <List dense>
               {referenceItems.map(id => (
-                <Route render={({ history }) => (
-                  <div key={id}>
-
-                    <ListItem>
-                      <Link
-                        onClick={e => {
-                          console.log("ID IS", id);
-                          history.push("entries/7")
-                        }}
-                      >
-                        {id.toLowerCase()}
-                      </Link>
-                    </ListItem>
-                  </div>
-
-                )} />
+                <Route
+                  key={id}
+                  render={({ history }) => (
+                    <div key={id}>
+                      <ListItem>
+                        <Link
+                          onClick={e => {
+                            console.log("ID IS", id);
+                            history.push("entries/7");
+                          }}
+                        >
+                          {id.toLowerCase()}
+                        </Link>
+                      </ListItem>
+                    </div>
+                  )}
+                />
               ))}
             </List>
           </Fragment>
@@ -133,17 +132,14 @@ export const EntryCard = ({
               : description.value}
           </Typography>
 
-
           {!hasDetails && (
-            <Route render={({ history }) => (
-
-              <Link
-                to={`${id.toLowerCase()}`}
-                onClick={onClick(history, id)}
-              >
-                {id.toLowerCase()}
-              </Link>
-            )} />
+            <Route
+              render={({ history }) => (
+                <Link to={`${id.toLowerCase()}`} onClick={onClick(history, id)}>
+                  {id.toLowerCase()}
+                </Link>
+              )}
+            />
           )}
           {references}
           {hasDetails && (
@@ -164,6 +160,5 @@ export const EntryCard = ({
         </CardContent>
       </Card>
     </div>
-
   );
 };

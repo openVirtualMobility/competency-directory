@@ -1,4 +1,5 @@
 import { references } from './references'
+import { getIdFromUrl } from '../utils'
 import neo4j from 'neo4j-driver'
 
 var config = require('../config.json')
@@ -79,15 +80,13 @@ export const createNewEntry = async newEntry => {
     neo4j.auth.basic('neo4j', 'qwerqwer')
   )
   const session = driver.session()
-
-  
+  let id = Math.floor(Math.random() ** (400 - 30) + 30).toString()
 
   let prefLabel = newEntry.prefLabel.map(x => JSON.stringify(x))
   let altLabel = newEntry.altLabel.map(x => JSON.stringify(x))
   let description = newEntry.description.map(x => JSON.stringify(x))
 
   let props = newEntry
-  let id = Math.floor(Math.random() * Math.floor(300)).toString()
   props.id = id
   props.prefLabel = prefLabel
   props.altLabel = altLabel
@@ -103,6 +102,104 @@ export const createNewEntry = async newEntry => {
       { props }
     )
   )
+
+  // defining the source id
+  let sourceId = id
+  // checking if relations exists
+  if (newEntry.isEssentialPartOf) {
+    // creating a array for all the single ID's
+    let referenceType = 'isEssentialPartOf'
+    let referenceTypeLabel = 'is essential subskill/part of'
+    for await (let url of newEntry.isEssentialPartOf) {
+      let targetId = getIdFromUrl(url)
+      await session.writeTransaction(tx =>
+        tx.run(
+          `
+            MATCH (a:entry),(b:entry)
+            WHERE a.id = "${sourceId}" AND b.id = "${targetId}"
+            CREATE (a)-[r:${referenceType} {label: "${referenceTypeLabel}"}]->(b)
+            `
+        )
+      )
+    }
+  }
+
+  // checking if relations exists
+  if (newEntry.isOptionalPartOf) {
+    // creating a array for all the single ID's
+    let referenceType = 'isOptionalPartOf'
+    let referenceTypeLabel = 'is optional subskill/part of'
+    for await (let url of newEntry.isOptionalPartOf) {
+      let targetId = getIdFromUrl(url)
+      await session.writeTransaction(tx =>
+        tx.run(
+          `
+              MATCH (a:entry),(b:entry)
+              WHERE a.id = "${sourceId}" AND b.id = "${targetId}"
+              CREATE (a)-[r:${referenceType} {label: "${referenceTypeLabel}"}]->(b)
+              `
+        )
+      )
+    }
+  }
+
+  // checking if relations exists
+  if (newEntry.needsAsPrerequisite) {
+    // creating a array for all the single ID's
+    let referenceType = 'needsAsPrerequisite'
+    let referenceTypeLabel = 'needs as prerequisite'
+    for await (let url of newEntry.needsAsPrerequisite) {
+      let targetId = getIdFromUrl(url)
+      await session.writeTransaction(tx =>
+        tx.run(
+          `
+                MATCH (a:entry),(b:entry)
+                WHERE a.id = "${sourceId}" AND b.id = "${targetId}"
+                CREATE (a)-[r:${referenceType} {label: "${referenceTypeLabel}"}]->(b)
+                `
+        )
+      )
+    }
+  }
+
+  // checking if relations exists
+  if (newEntry.isSimilarTo) {
+    // creating a array for all the single ID's
+    let referenceType = 'isSimilarTo'
+    let referenceTypeLabel = 'is similar to'
+    for await (let url of newEntry.isSimilarTo) {
+      let targetId = getIdFromUrl(url)
+      await session.writeTransaction(tx =>
+        tx.run(
+          `
+                MATCH (a:entry),(b:entry)
+                WHERE a.id = "${sourceId}" AND b.id = "${targetId}"
+                CREATE (a)-[r:${referenceType} {label: "${referenceTypeLabel}"}]->(b)
+                `
+        )
+      )
+    }
+  }
+
+  // checking if relations exists
+  if (newEntry.isSameAs) {
+    // creating a array for all the single ID's
+    let referenceType = 'isSameAs'
+    let referenceTypeLabel = 'is same as'
+    for await (let url of newEntry.isSameAs) {
+      let targetId = getIdFromUrl(url)
+      await session.writeTransaction(tx =>
+        tx.run(
+          `
+            MATCH (a:entry),(b:entry)
+            WHERE a.id = "${sourceId}" AND b.id = "${targetId}"
+            CREATE (a)-[r:${referenceType} {label: "${referenceTypeLabel}"}]->(b)
+            `
+        )
+      )
+    }
+  }
+
   session.close()
   console.log(props)
 }

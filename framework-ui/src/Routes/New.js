@@ -52,8 +52,8 @@ class New extends Component {
       loading: true,
       entry: {
         id: "",
-        language: "",
-        skillReuseLevel: "",
+        language: "en",
+        skillReuseLevel: "1 Transversal",
         isEssentialPartOf: [],
         isOptionalPartOf: [],
         isSameAs: [],
@@ -68,6 +68,9 @@ class New extends Component {
       },
       setOpen: false,
       entryOptions: [],
+      selectedLanguageOption: [],
+      selectedTypeOption: [],
+      selectedReuseOption: [],
       selectedEssentialPartOf: [],
       selectedOptionalPartOf: [],
       selectedsimilarTo: [],
@@ -164,6 +167,7 @@ class New extends Component {
 
     console.log(entry);
     api.createNew(entry);
+    this.props.history.goBack();
   }
 
   delete = () => {
@@ -190,6 +194,7 @@ class New extends Component {
   };
 
   entryPage = () => {
+    console.log(this.props);
     return (
       <div>
         <Dialog
