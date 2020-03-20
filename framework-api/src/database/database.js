@@ -80,6 +80,8 @@ export const createNewEntry = async newEntry => {
   )
   const session = driver.session()
 
+  
+
   let prefLabel = newEntry.prefLabel.map(x => JSON.stringify(x))
   let altLabel = newEntry.altLabel.map(x => JSON.stringify(x))
   let description = newEntry.description.map(x => JSON.stringify(x))

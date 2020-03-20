@@ -315,7 +315,7 @@ class New extends Component {
                   justifyContent: "flex-end",
                   paddingTop: 5,
                   paddingBottom: 5,
-                  zIndex: 2
+                  zIndex: 3
                 }}
               >
                 <Select
