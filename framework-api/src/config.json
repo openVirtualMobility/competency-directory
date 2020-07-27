@@ -1,3 +1,5 @@
 {
-  "baseurl": "http://cd.openvirtualmobility.eu"
+  "baseurl": "http://cd.openvirtualmobility.eu",
+  "neo4j": "blabla"
 }
+

@@ -14,6 +14,7 @@ import { references } from './routes/references'
 import { references as referenceData } from './database/references'
 import koaBody from 'koa-body'
 import koaSend from 'koa-send'
+const config = require('config.json');
 
 const app = new Koa()
 const router = new Router()
@@ -82,7 +83,7 @@ router.get('/context', async (ctx, next) => {
 app.use(async (ctx, next) => {
   ctx.driver = neo4j.driver(  // 192.168.178.47
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
   ctx.session = ctx.driver.session()
   await next()

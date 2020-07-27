@@ -1,19 +1,5 @@
 version: "3"
 services:
-# client-app build folder has to be copied to framework-api
-#  client-app:
-#    build: ./framework-ui
-#    image: framework-ui
-#    deploy:
-#      replicas: 1
-#      restart_policy:
-#        condition: on-failure
-#    ports:
-#      - "3000:3000"
-#    volumes:
-#      - ./framework-ui/:/app
-#    networks:
-#      - intranet
   server-app:
     build: ./framework-api
     image: framework-api
@@ -27,20 +13,13 @@ services:
     build: ./framework-database
     image: framework-database
     environment:
-      - NEO4J_AUTH=neo4j/qwerqwer
+      - NEO4J_AUTH=neo4j/blabla
     ports:
       - "7474:7474"
       - "7687:7687"
     networks:
       - intranet
-  # Enable this only for demonstration purposes
-  # It will runa production ready version of the UI
-  # client-app-production:
-  #   build: .
-  #   image: framework-ui-production
-  #   ports:
-  #     - "5000:5000"
-  #   networks:
-  #     - intranet
 networks:
   intranet:
+
+

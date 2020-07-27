@@ -1,7 +1,7 @@
 import Router from 'koa-router'
 import * as jsonld from 'jsonld'
 import * as database from '../database/database'
-var config = require("../config.json");
+const config = require("../config.json");
 
 const entries = new Router({
   prefix: '/entries',
