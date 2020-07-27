@@ -50,7 +50,7 @@ export const getReusabilityLevel = async () =>
 export const getReferences = async () => {
   const driver = neo4j.driver(
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
   const session = driver.session()
   const { records } = await session.writeTransaction(tx =>
@@ -78,7 +78,7 @@ export const updateEntry = async (id, lang, newEntry) => {
 
   const driver = neo4j.driver(
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
   const session = driver.session()
 
@@ -108,7 +108,7 @@ export const updateEntry = async (id, lang, newEntry) => {
 export const getEntries = async (requestedId, language) => {
   const driver = neo4j.driver(
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
 
   const session = driver.session()
@@ -185,7 +185,7 @@ export const createUser = async (username, password) => {
 
   const driver = neo4j.driver(
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
   const session = driver.session()
   return await session
@@ -205,7 +205,7 @@ export const createUser = async (username, password) => {
 export const getUserWithUsername = async username => {
   const driver = neo4j.driver(
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
   const session = driver.session()
   return session.run('MATCH (user:User {username: {username}}) RETURN user', {
@@ -216,7 +216,7 @@ export const getUserWithUsername = async username => {
 export const getUserWithUsernameAndPassword = async (username, password) => {
   const driver = neo4j.driver(
     'bolt://db:7687',
-    neo4j.auth.basic('neo4j', 'qwerqwer')
+    neo4j.auth.basic('neo4j', config.neo4j)
   )
   const session = driver.session()
   return session.run(

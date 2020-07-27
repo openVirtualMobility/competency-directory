@@ -14,7 +14,7 @@ import { references } from './routes/references'
 import { references as referenceData } from './database/references'
 import koaBody from 'koa-body'
 import koaSend from 'koa-send'
-const config = require('config.json');
+const config = require('./config.json');
 
 
 const app = new Koa()
