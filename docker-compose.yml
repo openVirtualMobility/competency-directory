@@ -1,5 +1,6 @@
 version: "3"
 services:
+  # attention: build framework-ui (client) and copy src\build to framework-api before start!
   server-app:
     build: ./framework-api
     image: framework-api

@@ -16,6 +16,7 @@ import koaBody from 'koa-body'
 import koaSend from 'koa-send'
 const config = require('config.json');
 
+
 const app = new Koa()
 const router = new Router()
 
@@ -33,7 +34,7 @@ app.use(async (ctx, next) => {
 })
 
 // detect GET of any deep-link by browsers (text/html clients) and send them the index.html instead
-app.use( async (ctx, next) => {
+app.use(async (ctx, next) => {
   if (ctx.request.method != 'GET') {
     await next();
     return;
@@ -50,7 +51,7 @@ app.use( async (ctx, next) => {
       break;
     default:
       await next();
-      // ctx.throw(406, 'client must accept html or json');
+    // ctx.throw(406, 'client must accept html or json');
   }
 });
 
@@ -112,20 +113,43 @@ router.get('/populate', async (ctx, next) => {
   await ctx.session.writeTransaction(tx =>
     tx.run(
       `
-      UNWIND $props AS Entry
-      CREATE (node:Entry)
-      SET node = Entry
+      UNWIND $props AS entry
+      CREATE (node:entry)
+      SET node = entry
       `,
       { props }
     )
   )
-  const { data: referenceTypes } = await db.getReferenceTypes()
-  await referenceData.forEach(async ({ sourceId, referenceType, targetId }) => {
+
+  for await (let data of referenceData) {
+    console.log(data)
+    let sourceId = data.sourceId
+    let referenceType = data.referenceType
+    let targetId = data.targetId
+
     const session = ctx.driver.session()
-    const referenceTypeLabel = referenceTypes.reduce(
-      (prev, { id, label }) => (id === referenceType ? label : prev),
-      undefined
-    )
+    let referenceTypeLabel = ''
+    // WE use a simple switch case
+    switch (referenceType) {
+      case 'isEssentialPartOf':
+        referenceTypeLabel = 'is essential subskill/part of'
+        break
+      case 'isOptionalPartOf':
+        referenceTypeLabel = 'is optional subskill/part of'
+        break
+      case 'needsAsPrerequisite':
+        referenceTypeLabel = 'needs as prerequisite'
+        break
+      case 'isSimilarTo':
+        referenceTypeLabel = 'is similar to'
+        break
+      case 'isSameAs':
+        referenceTypeLabel = 'is same as'
+        break
+      default:
+        console.log('no reference Label')
+    }
+
     await session.writeTransaction(tx =>
       tx.run(
         `
@@ -136,7 +160,8 @@ router.get('/populate', async (ctx, next) => {
       )
     )
     session.close()
-  })
+  }
+
   const result = await ctx.session.writeTransaction(tx =>
     tx.run(
       `MATCH (n)

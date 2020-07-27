@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-import { Route } from "react-router-dom";
 
 export default class Authentication extends Component {
 
@@ -16,7 +15,7 @@ export default class Authentication extends Component {
     // directly bypassing the Authentication
     this.props.history.push('/Dashboard')
   }
-  
+
   render() {
     return (
       <div>
