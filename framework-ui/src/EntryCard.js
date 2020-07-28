@@ -40,8 +40,10 @@ export const EntryCard = ({
     prefLabel,
     altLabel,
     description,
+    language,
     ...rest
   } = item;
+  delete rest["@context"];  // remove as this is not a referenceType
   let references = [];
   // Only render references if types are provided
   if (referenceTypes) {
