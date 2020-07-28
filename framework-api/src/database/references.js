@@ -248,5 +248,5 @@ export const references = [
     sourceId: '31',
     referenceType: 'needsAsPrerequisite',
     targetId: '33',
-  },
+  }
 ]

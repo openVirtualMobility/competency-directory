@@ -15,7 +15,7 @@ referenceTypes
     const entries = ctx.data.map(date =>
       Object.assign({}, date, {
         '@context': config.baseurl + '/context',
-        id: config.baseurl + '/referenceTypes/${date.id}',
+        id: config.baseurl + '/referenceTypes/'+date.id,
         key: date.id,
       })
     )

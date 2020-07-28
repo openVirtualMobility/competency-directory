@@ -10,6 +10,10 @@ import api from "../api";
 import LocalizedStrings from "react-localization";
 import backButton from "../assets/arrow-left.svg";
 import editButton from "../assets/edit.svg";
+import { sortAlphabetically } from '../utils'
+import List from '@material-ui/core/List'
+import { Route } from 'react-router'
+import ListItem from '@material-ui/core/ListItem'
 var language = require("../languages/languages.json");
 var config = require("../config.json");
 let strings = new LocalizedStrings(language);
@@ -18,12 +22,21 @@ class Entry extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true
+      entry: {},
+      loading: true,
+      referenceTypes: []
     };
   }
 
   async componentDidMount() {
-    console.log(this.props.match.params.id);
+
+    const getReferenceTypesResponse = await api.getReferenceTypes();
+    const getReferenceTypesData = await getReferenceTypesResponse.json();
+    const referenceTypes = sortAlphabetically(
+      getReferenceTypesData["@graph"],
+      // Tell the sort function to sort by which attribute
+      referenceType => referenceType.label
+    );
     var lang = localStorage.getItem("language");
     if (!lang) lang = Object.getOwnPropertyNames(language).pop() || "en"; // in case of unset language use first or EN
     let response = await api.getEntryWithId(this.props.match.params.id, lang);
@@ -33,7 +46,8 @@ class Entry extends Component {
       // do something with your data
       this.setState({
         entry: data,
-        loading: false
+        loading: false,
+        referenceTypes: referenceTypes
       });
     });
   }
@@ -58,6 +72,59 @@ class Entry extends Component {
   };
 
   entryPage = () => {
+
+    const {
+      id,
+      skillType,
+      skillReuseLevel,
+      prefLabel,
+      altLabel,
+      description,
+      language,
+      ...rest
+    } = this.state.entry;
+    delete rest["@context"];  // remove as this is not a referenceType
+
+    let references = [];
+    // Only render references if types are provided
+    if (this.state.referenceTypes) {
+      for (let referenceKey in rest) {
+        const referenceTitle = this.state.referenceTypes.reduce(
+          (prev, { key, label }) => (key === referenceKey ? label : prev),
+          ""
+        );
+        const referenceTitleUpperFirst =
+          referenceTitle.charAt(0).toUpperCase() + referenceTitle.substr(1);
+        const referenceItems =
+          typeof rest[referenceKey] === "string"
+            ? [rest[referenceKey]]
+            : rest[referenceKey];
+        if (referenceItems.length > 0) {
+          references.push(
+            <Fragment key={referenceTitleUpperFirst}>
+              <Typography variant="subtitle1">
+                {referenceTitleUpperFirst}:
+              </Typography>
+              <List>
+                {referenceItems.map(id => (
+                  <Route render={({ history }) => (
+                    <div key={id}>
+                      <ListItem>
+                        <Link href={id.toLowerCase()} style={{fontSize: "smaller"}}>
+                          {id.toLowerCase()}
+                        </Link>
+                      </ListItem>
+                    </div>
+
+                  )} />
+                ))}
+              </List>
+            </Fragment>
+          );
+        }
+      }
+    }
+
     return (
       <div>
         <div
@@ -143,9 +210,10 @@ class Entry extends Component {
               <Typography paragraph>
                 {this.state.entry.description.value}
               </Typography>
-              <Typography>
-                {config.baseurl}/entries/{this.props.match.params.id}
+              <Typography paragraph>
+                URL: {config.baseurl}/entries/{this.props.match.params.id}
               </Typography>
+              {references}
             </CardContent>
           </Card>
         </div>

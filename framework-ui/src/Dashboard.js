@@ -14,11 +14,12 @@ var language = require("./languages/languages.json");
 
 const options = [
   { value: 'en', label: 'English' },
-  { value: 'de', label: 'German' },
   { value: 'nl', label: 'Dutch' },
-  { value: 'es', label: 'Spanish' },
-  { value: 'it', label: 'Italian' },
   { value: 'fr', label: 'French' },
+  { value: 'de', label: 'German' },
+  { value: 'it', label: 'Italian' },
+  { value: 'rom', label: 'Romanian' },
+  { value: 'es', label: 'Spanish' }
 ];
 
 let strings = new LocalizedStrings(language);
@@ -58,7 +59,6 @@ class Dashboard extends Component {
       referenceType => referenceType.label
     );
     this.setState({ referenceTypes });
-
     // If there is an entry id present in the url on load open the modal with it
     const url = new URL(window.location);
     const urlEntry = url.searchParams.get("entry");
@@ -83,7 +83,7 @@ class Dashboard extends Component {
     }
   };
 
-  // To a given entry id get the entry from the entris and select it
+  // To a given entry id get the entry from the entries and select it
   setPreSelectedEntry = urlEntry => {
     const { entries } = this.state;
     const preSelectedEntry = entries.filter(({ id }) => urlEntry === id)[0];
@@ -134,7 +134,7 @@ class Dashboard extends Component {
     this.setState({ selectedOption });
     const getEntriesResponse = await api.getEntries(selectedOption.value);
     const getEntriesData = await getEntriesResponse.json();
-    console.log(getEntriesData)
+//    console.log(getEntriesData)
     const entries = sortAlphabetically(
       getEntriesData["@graph"],
       // Tell the sort function to sort by which attribute
@@ -215,7 +215,7 @@ class Dashboard extends Component {
                 <label {...downShift.getLabelProps()}>
                   {strings.searchEntries}:&nbsp;&nbsp;
               </label>
-                <Input
+                <Input style={{width: strings.labelAndDescription.length+"ex", minWidth: "20ex"}}
                   {...downShift.getInputProps({
                     placeholder: strings.labelAndDescription
                   })}

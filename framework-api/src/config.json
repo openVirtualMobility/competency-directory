@@ -1,5 +1,5 @@
 {
-  "baseurl": "http://cd.openvirtualmobility.eu",
+  "baseurl": "http://localhost:6060",
   "neo4j": "blabla"
 }
 
