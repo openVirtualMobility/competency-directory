@@ -3,6 +3,7 @@ import * as jsonld from 'jsonld'
 import * as database from '../database/database'
 
 const referenceTypes = new Router({ prefix: '/referenceTypes' })
+var config = require("../config.json")
 
 referenceTypes
   .get('/', async (ctx, next) => {
@@ -13,8 +14,8 @@ referenceTypes
   .use(async (ctx, next) => {
     const entries = ctx.data.map(date =>
       Object.assign({}, date, {
-        '@context': 'http://localhost:6060/context',
-        id: `http://localhost:6060/referenceTypes/${date.id}`,
+        '@context': config.baseurl + '/context',
+        id: config.baseurl + '/referenceTypes/'+date.id,
         key: date.id,
       })
     )
@@ -26,7 +27,7 @@ referenceTypes
       ctx.body = await jsonld.expand(ctx.entries)
     } else {
       ctx.body = await jsonld.compact(ctx.entries, {
-        '@context': 'http://localhost:6060/context/',
+        '@context': config.baseurl + '/context/',
       })
     }
     await next()

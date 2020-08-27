@@ -1,6 +1,7 @@
 import Router from 'koa-router'
 import * as jsonld from 'jsonld'
 import * as database from '../database/database'
+const config = require("../config.json");
 
 const entries = new Router({
   prefix: '/entries',
@@ -8,12 +9,25 @@ const entries = new Router({
 
 entries
   .get('/', async (ctx, next) => {
-    const { data } = await database.getEntries()
-    ctx.data = data
+    const { data } = await database.getEntries(null, ctx.query.language)
+    console.log(ctx.header.accept);
+    ctx.data = data;
     await next()
   })
   .get('/:id', async (ctx, next) => {
-    const { data } = await database.getEntries(ctx.params.id)
+    const { data } = await database.getEntries(
+      ctx.params.id,
+      ctx.query.language
+    )
+    ctx.data = data
+    await next()
+  })
+  .patch('/:id', async (ctx, next) => {
+    const { data } = await database.updateEntry(
+      ctx.params.id,
+      ctx.query.language,
+      ctx.request.body
+    )
     ctx.data = data
     await next()
   })
@@ -29,7 +43,7 @@ entries
     const entries = ctx.data.map(date => {
       return {
         ...date,
-        '@context': 'http://localhost:6060/context/',
+        '@context': config.baseurl + '/context/',
       }
     })
     ctx.entries = entries
@@ -40,7 +54,7 @@ entries
       ctx.body = await jsonld.expand(ctx.entries)
     } else {
       ctx.body = await jsonld.compact(ctx.entries, {
-        '@context': 'http://localhost:6060/context/',
+        '@context': config.baseurl + '/context/',
       })
     }
     await next()

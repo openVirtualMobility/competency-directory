@@ -1,46 +1,65 @@
 export const setEntryInUrl = id => {
+  var slicedId = id.slice(-2);
+  var parsedId = parseInt(slicedId);
+  var finalId;
+  if (!isNaN(parsedId)) {
+    finalId = parsedId;
+  } else {
+    slicedId = id.slice(-1);
+    parsedId = parseInt(slicedId);
+    finalId = parsedId;
+  }
+
   const url = new URL(window.location);
-  url.search = `?entry=${id}`;
+  url.search = `?${finalId}`;
+  window.history.pushState({}, "", url.toString());
+};
+
+export const navigateTo = route => {
+  const url = new URL(window.location);
+  url.search = `${route}`;
   window.history.pushState({}, "", url.toString());
 };
 
 export const sortAlphabetically = (array, getAttribute) => {
-    if (!array) {
-        console.log("No array data to sort");
-        return []
+  if (!array) {
+    console.log("No array data to sort");
+    return [];
+  }
+  return array.sort((a, b) => {
+    var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
+    var nameB = getAttribute(b).toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
     }
-    return array.sort((a, b) => {
-            var nameA = getAttribute(a).toUpperCase(); // ignore upper and lowercase
-            var nameB = getAttribute(b).toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-                return -1;
-            }
-            if (nameA > nameB) {
-                return 1;
-            }
+    if (nameA > nameB) {
+      return 1;
+    }
 
-            // names must be equal
-            return 0;
-        }
-    );
-}
+    // names must be equal
+    return 0;
+  });
+};
 
 export const searchRanked = (searchForInput, data) => {
   const rankedEntries = data
     .map(item => {
       let found = 0;
-      if (item.prefLabel.value.includes(searchForInput)) {
+      searchForInput = searchForInput.toLowerCase();
+      let title = item.prefLabel.value.toLowerCase();
+      if (title.includes(searchForInput)) {
         found = found + 5;
       }
-      if (item.description.value.includes(searchForInput)) {
-        found = found + 5;
+      let description = item.description.value.toLowerCase();
+      if (description.includes(searchForInput)) {
+        found = found + 2;
       }
       found =
         found +
         searchForInput.split(" ").reduce((prev, curr) => {
-          return item.prefLabel.value.includes(curr)
+          return title.includes(curr)
             ? prev + 1
-            : item.description.value.includes(curr)
+            : description.includes(curr)
             ? prev + 1
             : prev;
         }, 0);
@@ -57,7 +76,7 @@ export const searchRanked = (searchForInput, data) => {
   return rankedEntries
     .slice(
       0,
-      Math.floor(data.length / (highestRanking * (searchForInput.length / 6)))
+      Math.floor(data.length / (highestRanking * (searchForInput.length / 12)))
     )
     .map(({ value }) => value);
 };
